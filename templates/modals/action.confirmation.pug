@@ -1,0 +1,21 @@
+include general-mixins.pug
+
+mz-modal(
+  '[options]'='properties'
+)
+  mz-modal-header
+    i.yellow-text(mz-icon-mdi '[icon]'='alert')
+    ='{{ title }}'
+  mz-modal-content
+    ='{{ message }}'
+  mz-modal-footer
+    +button('button', '{{ langManager.messages.global.accept }}', 'check')(
+      mz-modal-close
+      'class'='red-text'
+      '[flat]'='true'
+      '(click)'='onActionConfirmed()'
+    )
+    +button('button', '{{ langManager.messages.global.cancel }}', 'close')(
+      '[flat]'='true'
+      mz-modal-close
+    )

@@ -1,0 +1,58 @@
+//- * [sideNavButtonProperties] (JSON): contiene la informacion necesaria 
+//-   para agregar un boton que active un menu de navegacion lateral. Debe 
+//-   tener el siguiente formato:
+//-   * [id] (string): expresion Angular que define el ID 
+//-     HTML del boton que activara el menu lateral
+//-   * [showCondition] (string): expresion Angular que define la condicion que 
+//-     indica cuando se debe renderizar el boton que activa el menu lateral
+mixin navBar(sideNavButtonProperties = null)
+  mz-navbar&attributes(attributes)
+    if sideNavButtonProperties
+      mz-navbar-item-container('[align]'="'left'")
+        +sideNavButton(sideNavButtonProperties)
+    if block
+      mz-navbar-item-container('[align]'="'right'")
+        block
+
+mixin sideNavButton(properties = {})
+  - var id = (properties.id) ? properties.id : "'sidenav-activation-btn'"
+  if properties.showCondition
+    mz-navbar-item('*ngIf'=properties.showCondition)
+      a('[id]'=id)
+        i(mz-icon-mdi '[icon]'="'menu'")
+  else 
+    mz-navbar-item
+      a('[id]'=id)
+        i(mz-icon-mdi '[icon]'="'menu'")
+
+//- * id (string): expresion Angular que define el ID HTML del menu lateral a 
+//-   crear
+//- * activationButtonId (string): expresion Angular que define el ID HTML del 
+//-   boton que activara dicho menu lateral
+mixin sideNav(id = "'sidenav'", activationButtonId = "'sidenav-activation-btn'")
+  mz-sidenav(
+    '[id]'=id 
+    '[collapseButtonId]'=activationButtonId
+  )&attributes(attributes)
+    block
+
+mixin dropdownMenu(id, activationButtonId)
+  mz-dropdown(
+    '[id]'=id,
+    '[dropdownButtonId]'=activationButtonId
+  )&attributes(attributes)
+    if block
+      block
+
+//- * title (string): expresion Angular que define el titulo del menu 
+//-   colapsable a crear
+//- * icon (string): expresion Angular que define el nombre del icono MDI a 
+//-   desplegar en el titulo
+mixin sideNavCollapsible(title, icon)
+  mz-sidenav-collapsible&attributes(attributes)
+    mz-sidenav-collapsible-header
+      i(mz-icon-mdi '[icon]'=icon)
+      =title
+    if block
+      mz-sidenav-collapsible-content
+        block

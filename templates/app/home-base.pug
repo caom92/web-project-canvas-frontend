@@ -1,0 +1,13 @@
+include nav-menu-mixins.pug
+
+- var sideNavBtnProperties = {
+    showCondition: "globals.showSideNav === true"
+  }
++navBar(sideNavBtnProperties)
+  block NavBarItems
+
++sideNav()('[fixed]'="'true'")
+  block SideNavItems
+
+div.container('[ngClass]'="{ 'with-sidenav': true }")
+  ui-view

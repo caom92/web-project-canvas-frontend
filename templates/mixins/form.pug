@@ -1,0 +1,106 @@
+//- * label (string): expresion Angular que define el texto del nombre de dicho 
+//-   campo de texto
+//- * [icon] (string): expresion Angular que define el nombre del icono a 
+//-   desplegar junto con dicho campo de texto
+mixin textInput(label, icon = null)
+  mz-input-container
+    if icon
+      i(mz-icon-mdi mz-input-prefix '[icon]'=icon)
+    input(mz-input
+      type='text'
+      '[label]'=label
+    )&attributes(attributes)
+
+mixin passwordInput(label, icon = null)
+  mz-input-container
+    if icon
+      i(mz-icon-mdi mz-input-prefix '[icon]'=icon)
+    input(mz-input
+      type='password'
+      '[label]'=label
+    )&attributes(attributes)
+
+//- * length (uint): el numero maximo de caracteres que el area de texto va a 
+//-   admitir
+mixin textArea(length, label, icon = null)
+  mz-textarea-container
+    i(mz-textarea-prefix '[icon]'=icon)
+    textarea(mz-textarea
+      '[label]'=label
+      length=length
+    )&attributes(attributes)
+
+//- * group (string): el valor a ingresar en el atributo HTML name; para 
+//-   agrupar un conjunto de checkboxes como si fueran multiples opciones para 
+//-   la misma entrada de usuario, deben compartir todos el mismo nombre (pero 
+//-   el valor especificado en el attributo value debe ser diferente entre 
+//-   ellos para poder distinguirlos)
+mixin checkbox(group)
+  mz-checkbox-container
+    input(mz-checkbox
+      name=group
+      type='checkbox'
+    )&attributes(attributes)
+
+//- * element (string): el valor a ingresar en el atributo HTML id para poder 
+//-   distinguir el checkbox de los demas que pertenezcan a su mismo grupo
+mixin radioButton(element, group)
+  mz-radio-button-container
+    input(mz-radio-button
+      id=element
+      name=group
+      type='radio'
+      '[withGap]'='true'
+    )&attributes(attributes)
+
+//- * label (string): expresion Angular que define el texto a desplegar como el 
+//-   nombre de la lista de seleccion a desplegar 
+//- * optionsList (string): nombre del atributo del componente Angular 
+//-   que almacena el arreglo de opciones a desplegar en la lista de seleccion 
+//- * optionsProperties (JSON): define la manera en la que se comportaran las 
+//-   opciones desplegadas en la lista de seleccion; posee el siguiente formato:
+//-   * [name] (string): el nombre del atributo de cada elemento de optionsList 
+//-     cuyo valor sera desplegado en la lista de seleccion como el nombre cada 
+//-     opcion
+//-   * [value] (string): el nombre del atributo de cada elemento de 
+//-     optionsList cuyo valor sera retornado al componente cuando dicha opcion 
+//-     haya sido elegida por el usuario
+mixin select(label, optionsList, optionsProperties = {})
+  - var optionName = (optionsProperties.name) ? optionsProperties.name : ''
+  - var optionValue = (optionsProperties.value) ? optionsProperties.value : ''
+  mz-select-container
+    select(mz-select
+      '[label]'=label
+      '[placeholder]'='langManager.messages.global.selectPlaceholder'
+    )&attributes(attributes)
+      option(
+        '*ngFor'='let x of ' + optionsList
+        '[ngValue]'='x' + optionValue
+      )
+        ='{{ x' + optionName + ' }}'
+
+//- * placeholder (string): el texto a desplegar en el campo de archivo antes 
+//-   de que el usuario haya elegido un archivo
+mixin fileInput(placeholder)
+  div.file-field.input-field
+    div.btn
+      span: ='{{ langManager.messages.global.search }}'
+      input(type='file')&attributes(attributes)
+    div.file-path-wrapper
+      input.file-path.validate(type='text' placeholder=placeholder)
+
+//- * label (string): expresion Angular que define el texto a desplegar como el 
+//-   nombre del campo de fecha a crear
+//- * [pickadateOptions] (string): expresion Angular que define las opciones de 
+//-   configuracion Pickadate para el campo de fecha:  
+//-   http://amsul.ca/pickadate.js/date/#options
+mixin dateInput(
+  label, 
+  pickadateOptions='langManager.messages.datePickerConfig'
+)
+  mz-datepicker-container
+    input(mz-datepicker
+      type='text',
+      '[label]'=label
+      '[options]'=pickadateOptions
+    )&attributes(attributes)

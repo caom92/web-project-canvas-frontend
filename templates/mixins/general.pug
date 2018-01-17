@@ -1,0 +1,58 @@
+mixin link(destinationUrl = 'javascript:void(0)')
+  a(href=destinationUrl)&attributes(attributes)
+    block
+
+mixin uiRouterLink(destinationState)
+  a(uiSref=destinationState)&attributes(attributes)
+    block
+
+mixin collapsibleItem(title, icon)
+  mz-collapsible-item
+    mz-collapsible-item-header
+      i(mz-icon-mdi '[icon]'=icon)
+      =title
+    mz-collapsible-item-body
+      block
+
+//- * type (string): es una cadena que contiene el valor para el atributo HTML 
+//-   type del boton a crear
+mixin button(type, label, icon = null)
+  button(mz-button type=type)&attributes(attributes)=label
+    if icon
+      i(mz-input-prefix '[icon]'=icon)
+
+
+
+
+
+
+
+//- * headers (string): expresion Angular que define el nombre del atributo del 
+//-   componente Angular que contiene el arreglo de encabezados de la tabla
+mixin responsiveTable(headers)
+  table.highlight.responsive-table&attributes(attributes)
+    thead
+      th('*ngFor'='let header of ' + headers) 
+        ='{{ header }}'
+    tbody
+      block
+
+mixin table(headers)
+  table.highlight&attributes(attributes)
+    thead
+      th('*ngFor'='let header of ' + headers) 
+        ='{{ header }}'
+    tbody
+      block
+
+
+
+//- * path (string): expresion Angular que contiene el URL al archivo a 
+//-   desplegar con ViewerJS: http://viewerjs.org/instructions/
+mixin viewerJsDoc(path)
+  iframe(allowfullscreen webkitallowfullscreen
+    '[src]'=path
+    width='100%'
+    height='100%'
+  )
+
