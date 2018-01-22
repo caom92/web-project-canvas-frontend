@@ -9,13 +9,13 @@ mz-modal(
   mz-modal-content
     ='{{ message }}'
   mz-modal-footer
-    +button('button', '{{ langManager.messages.global.accept }}', 'check')(
+    +button('button', '{{ "accept" | translate:lang }}', 'check')(
       mz-modal-close
       'class'='red-text'
       '[flat]'='true'
       '(click)'='onActionConfirmed()'
     )
-    +button('button', '{{ langManager.messages.global.cancel }}', 'close')(
+    +button('button', '{{ "cancel" | translate:lang }}', 'close')(
       '[flat]'='true'
       mz-modal-close
     )

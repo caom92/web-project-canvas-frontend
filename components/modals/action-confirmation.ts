@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core'
 import { Modal } from './base'
-import { LanguageService } from '../../services/language'
 
 
 @Component({
@@ -19,8 +18,8 @@ export abstract class ActionConfirmationModalComponent extends Modal
   @Input()
   invokingComponent: any = null
 
-  constructor(langManager: LanguageService) {
-    super(langManager)
+  constructor() {
+    super()
     this.properties.dismissible = false
   }
 

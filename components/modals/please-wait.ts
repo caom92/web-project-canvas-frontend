@@ -1,6 +1,5 @@
 import { Component } from '@angular/core'
 import { Modal } from './base'
-import { LanguageService } from '../../services/language'
 
 
 @Component({
@@ -8,8 +7,8 @@ import { LanguageService } from '../../services/language'
 })
 export class ProgressModalComponent extends Modal 
 {
-  constructor(langManager: LanguageService) {
-    super(langManager)
+  constructor() {
+    super()
     this.properties.dismissible = false
   }
 }

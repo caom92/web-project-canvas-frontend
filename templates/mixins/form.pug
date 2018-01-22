@@ -71,7 +71,7 @@ mixin select(label, optionsList, optionsProperties = {})
   mz-select-container
     select(mz-select
       '[label]'=label
-      '[placeholder]'='langManager.messages.global.selectPlaceholder'
+      '[placeholder]'='selectPlaceholder'
     )&attributes(attributes)
       option(
         '*ngFor'='let x of ' + optionsList
@@ -84,7 +84,7 @@ mixin select(label, optionsList, optionsProperties = {})
 mixin fileInput(placeholder)
   div.file-field.input-field
     div.btn
-      span: ='{{ langManager.messages.global.search }}'
+      span: ='{{ "search" | translate:lang }}'
       input(type='file')&attributes(attributes)
     div.file-path-wrapper
       input.file-path.validate(type='text' placeholder=placeholder)
@@ -96,7 +96,7 @@ mixin fileInput(placeholder)
 //-   http://amsul.ca/pickadate.js/date/#options
 mixin dateInput(
   label, 
-  pickadateOptions='langManager.messages.datePickerConfig'
+  pickadateOptions='datePickerConfig'
 )
   mz-datepicker-container
     input(mz-datepicker
