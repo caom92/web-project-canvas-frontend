@@ -1,7 +1,3 @@
-import { Injectable, OnInit } from '@angular/core'
-
-
-@Injectable()
-export class GlobalMembersService {
+export abstract class GlobalMembersService {
   protected showSideNav: boolean
 }
