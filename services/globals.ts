@@ -1,3 +1,7 @@
 export abstract class GlobalMembersService {
-  protected showSideNav: boolean
+  protected _showSideNav: boolean
+
+  get showSideNav(): boolean {
+    return this._showSideNav
+  }
 }
