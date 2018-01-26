@@ -6,7 +6,7 @@ import {
 } from '@angular/core'
 import { 
   DynamicComponentContainerDirective 
-} from '../directives/dynamic.container'
+} from '../directives/dynamic-container'
 
 
 export class DynamicComponentInjector {
