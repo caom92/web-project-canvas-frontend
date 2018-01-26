@@ -15,8 +15,9 @@ export type BackendResponse = {
   data: any
 }
 
-type OnSuccessCallback = (response: BackendResponse) => void
-type OnErrorCallback = (error: any, caught: Observable<void>) => Array<any>
+export type OnSuccessCallback = (response: BackendResponse) => void
+export type OnErrorCallback = 
+  (error: any, caught: Observable<void>) => Array<any>
 
 @Injectable()
 export class BackendService {
@@ -26,7 +27,7 @@ export class BackendService {
     }),
     withCredentials: true
   })
-  
+
   private static defaultOnErrorCallback: OnErrorCallback = 
     (error: any, caught: Observable<void>) => {
       Observable.throw(error)
@@ -97,9 +98,17 @@ export class BackendService {
       .subscribe()
   }
 
-  protected parseHttpResponseToJson(response: Response): any {
+  private parseHttpResponseToJson(response: Response): any {
     let responseBody = response['_body'].toString()
-    return JSON.parse(responseBody)
+    let responseJson = JSON.parse(responseBody)
+    if (responseJson.meta !== undefined) {
+      responseJson = {
+        returnCode: responseJson.meta.return_code,
+        message: responseJson.meta.message,
+        data: responseJson.data
+      }
+    }
+    return responseJson
   }
 
   private parseJsonToUrlParams(json: any): string {

@@ -2,13 +2,16 @@ include ../mixins/nav-menu.pug
 
 - 
   var sideNavBtnProperties = {
-    showCondition: "globals.showSideNav === true"
+    showCondition: "globals.isSideNavVisible === true"
   }
-+navBar(sideNavBtnProperties)
++navBar(sideNavBtnProperties)('[navbarClass]'='globals.navBarColor')
   block NavBarItems
 
-+sideNav()('[fixed]'="'true'")
++sideNav()('[fixed]'="'true'" '*ngIf'="globals.isSideNavVisible === true")
   block SideNavItems
 
-div.container('[ngClass]'="{ 'with-sidenav': true }")
-  ui-view
+div.container('[ngClass]'="{ 'with-sidenav': globals.isSideNavVisible }")
+  ui-view('[hidden]'='globals.isSpinnerVisible')
+  div.row('[hidden]'='!globals.isSpinnerVisible')
+    div.col.s12.m12.center-align
+      mz-spinner('[size]'="'big'")

@@ -24,7 +24,7 @@ mixin passwordInput(label, icon = null)
 //-   admitir
 mixin textArea(length, label, icon = null)
   mz-textarea-container
-    i(mz-textarea-prefix '[icon]'=icon)
+    i(mz-mdi-icon mz-textarea-prefix '[icon]'=icon)
     textarea(mz-textarea
       '[label]'=label
       length=length
@@ -94,10 +94,7 @@ mixin fileInput(placeholder)
 //- * [pickadateOptions] (string): expresion Angular que define las opciones de 
 //-   configuracion Pickadate para el campo de fecha:  
 //-   http://amsul.ca/pickadate.js/date/#options
-mixin dateInput(
-  label, 
-  pickadateOptions='datePickerConfig'
-)
+mixin dateInput(label, pickadateOptions='datePickerConfig')
   mz-datepicker-container
     input(mz-datepicker
       type='text',

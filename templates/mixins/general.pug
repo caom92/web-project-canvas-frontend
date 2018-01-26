@@ -6,10 +6,11 @@ mixin uiRouterLink(destinationState)
   a(uiSref=destinationState)&attributes(attributes)
     block
 
-mixin collapsibleItem(title, icon)
+mixin collapsibleItem(title, icon = null)
   mz-collapsible-item
     mz-collapsible-item-header
-      i(mz-icon-mdi '[icon]'=icon)
+      if icon
+        i(mz-icon-mdi '[icon]'=icon)
       =title
     mz-collapsible-item-body
       block
@@ -19,7 +20,7 @@ mixin collapsibleItem(title, icon)
 mixin button(type, label, icon = null)
   button(mz-button type=type)&attributes(attributes)=label
     if icon
-      i(mz-input-prefix '[icon]'=icon)
+      i(mz-icon-mdi mz-input-prefix '[icon]'=icon)
 
 //- * headers (string): expresion Angular que define el nombre del atributo del 
 //-   componente Angular que contiene el arreglo de encabezados de la tabla

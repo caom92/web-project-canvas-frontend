@@ -1,7 +1,7 @@
 import { TranslationService } from 'angular-l10n'
 
 // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
-function getTodayFormattedDate(): string {
+export function getTodayFormattedDate(): string {
   let today = new Date()
   let year = today.getUTCFullYear().toString()
   let month = (today.getMonth() + 1).toString()
@@ -21,7 +21,7 @@ function getTodayFormattedDate(): string {
   return `${ year }-${ month }-${ day }`
 }
 
-function getServiceMessage(
+export function getServiceMessage(
   textTranslator: TranslationService, service: string, code: number
 ): string {
   let message = textTranslator.translate(`${ service } response ${ code }`)
@@ -31,7 +31,7 @@ function getServiceMessage(
   return message
 }
 
-function getDatePickerConfig(lang: string): any {
+export function getDatePickerConfig(lang: string): any {
   return (lang === 'es') ? 
     {
       "closeOnSelect": true,
