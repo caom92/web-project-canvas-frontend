@@ -6,14 +6,14 @@ export const languageConfig: L10nConfig = {
       { code: 'es', dir: 'ltr' },
       { code: 'en', dir: 'ltr' }
     ],
-    language: 'en',
-    storage: StorageStrategy.Cookie
+    language: 'es',
+    storage: StorageStrategy.Local
   },
   translation: {
     providers: [
       { type: ProviderType.Static, prefix: './assets/locale-' }
     ],
     caching: true,
-    missingValue: 'Translation Error'
+    missingValue: 'Missing translation error'
   }
 }
