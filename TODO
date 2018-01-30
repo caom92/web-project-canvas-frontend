@@ -1,5 +1,0 @@
-[] Traducciones de idiomas debe implementarse con lang10 (o como se llame)
-[] LanguageService debe ser minimizado para retornar objetos que dependan del 
-   idioma, pero que no sean simples cadenas de texto
-[] Agrupar todo el contenido de este repositorio en un modulo que pueda ser 
-   importado con NPM en otros proyectos
