@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs/Rx'
-import { Injectable } from '@angular/core'
 import { 
   Http, 
   Response, 
@@ -19,8 +18,8 @@ export type OnSuccessCallback = (response: BackendResponse) => void
 export type OnErrorCallback = 
   (error: any, caught: Observable<void>) => Array<any>
 
-@Injectable()
-export class BackendService {
+export abstract class BackendService {
+
   private static requestOptions: RequestOptions = new RequestOptions({
     headers: new Headers({ 
       'Accept': 'application/json'
@@ -34,11 +33,11 @@ export class BackendService {
       return []
     }
 
-  constructor(private http: Http) {
+  constructor(private servicesBaseUrl: any, private http: Http) {
   }
 
   read(
-    serviceUrl: string, 
+    service: string, 
     data: any, 
     onSuccessCallback: OnSuccessCallback,
     onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
@@ -52,7 +51,7 @@ export class BackendService {
     // dividiendolos con diagonales
     this.http
       .get(
-        serviceUrl + this.parseJsonToUrlParams(data),
+        this.servicesBaseUrl + service + this.parseJsonToUrlParams(data),
         BackendService.requestOptions
       )
       .map((response: Response) => {
@@ -64,13 +63,13 @@ export class BackendService {
   }
 
   write(
-    serviceUrl: string, 
+    service: string, 
     data: FormData, 
     onSuccessCallback: OnSuccessCallback,
     onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
   ): void {
     this.http
-      .post(serviceUrl, data, BackendService.requestOptions)
+      .post(this.servicesBaseUrl + service, data, BackendService.requestOptions)
       .map((response: Response) => {
         let result = this.parseHttpResponseToJson(response)
         onSuccessCallback(result)
@@ -80,14 +79,14 @@ export class BackendService {
   }
 
   delete(
-    serviceUrl: string, 
+    service: string, 
     data: any, 
     onSuccessCallback: OnSuccessCallback,
     onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
   ): void {
     this.http
       .delete(
-        serviceUrl + this.parseJsonToUrlParams(data),
+        this.servicesBaseUrl + service + this.parseJsonToUrlParams(data),
         BackendService.requestOptions
       )
       .map((response: Response) => {
