@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core'
-import { Modal } from './base'
+import { MzBaseModal } from 'ng2-materialize'
+import { LocaleService, TranslationService, Language } from 'angular-l10n'
 
 
 @Component({
@@ -7,8 +8,11 @@ import { Modal } from './base'
   // exactamente la misma vista
   templateUrl: '../../templates/modals/action.confirmation.html'
 })
-export abstract class ActionConfirmationModalComponent extends Modal
+export abstract class ActionConfirmationModalComponent extends MzBaseModal
 {
+  @Language()
+  lang: string
+
   @Input()
   title: string = null
 
@@ -18,9 +22,11 @@ export abstract class ActionConfirmationModalComponent extends Modal
   @Input()
   invokingComponent: any = null
 
-  constructor() {
+  constructor(
+    public locale: LocaleService,
+    public textTranslator: TranslationService
+  ) {
     super()
-    this.properties.dismissible = false
   }
 
   abstract onActionConfirmed(): void

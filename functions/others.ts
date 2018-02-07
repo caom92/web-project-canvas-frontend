@@ -1,4 +1,5 @@
 import { TranslationService } from 'angular-l10n'
+import { FormGroup } from '@angular/forms'
 
 // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
 export function getTodayFormattedDate(): string {
@@ -66,4 +67,17 @@ export function getDatePickerConfig(lang: string): any {
       "format": "dddd, dd mmmm, yyyy",
       "formatSubmit": "yyyy-mm-dd"
     }
+}
+
+export function comparePasswordInputs(
+  group: FormGroup, entryField: string, confirmationField: string
+) : any {
+  let password = group.controls[entryField].value 
+  let passwordConfirmation = 
+    group.controls[confirmationField].value
+  
+  // hay que retornar una bandera de error que activara el 
+  // mensaje de error a desplegar
+  return (password === passwordConfirmation) ? 
+    null : { arePasswordsDifferent: true }
 }

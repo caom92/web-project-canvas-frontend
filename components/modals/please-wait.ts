@@ -1,14 +1,24 @@
 import { Component } from '@angular/core'
-import { Modal } from './base'
+import { LocaleService, TranslationService, Language } from 'angular-l10n'
+import { MzBaseModal } from 'ng2-materialize'
 
 
 @Component({
-  templateUrl: '../../templates/modals/please.wait.html'
+  templateUrl: '../../templates/modals/please-wait.html'
 })
-export class ProgressModalComponent extends Modal 
-{
-  constructor() {
+export class ProgressModalComponent extends MzBaseModal {
+
+  @Language()
+  lang: string
+
+  private options = {
+    dismissable: false
+  }
+
+  constructor(
+    public locale: LocaleService,
+    public textTranslator: TranslationService
+  ) {
     super()
-    this.properties.dismissible = false
   }
 }
