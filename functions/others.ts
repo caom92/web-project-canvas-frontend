@@ -81,3 +81,25 @@ export function comparePasswordInputs(
   return (password === passwordConfirmation) ? 
     null : { arePasswordsDifferent: true }
 }
+
+export function parseListElementsToAnotherType<I, O>(
+  list: Array<I>, map: (object: I) => O
+): Array<O> 
+{
+  let parsedData: Array<O> = []
+  for (let object of list) {
+    parsedData.push(map(object))
+  }
+  return parsedData
+}
+
+export function getArrayElementBySearchFilter<T>(
+  list: Array<T>, filter: (object: T) => boolean
+): T {
+  for (let object of list) {
+    if (filter(object)) {
+      return object
+    }
+  }
+  return null
+}
