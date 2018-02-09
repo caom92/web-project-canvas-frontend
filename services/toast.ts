@@ -4,7 +4,7 @@ import { MzToastService } from 'ng2-materialize'
 
 @Injectable()
 export class RoundedToastService {
-  constructor(private toastService: MzToastService) {
+  constructor(private readonly toastService: MzToastService) {
   }
 
   show(message: string, onDismissCallback: () => void = () => {}): void {

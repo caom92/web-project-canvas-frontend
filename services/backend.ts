@@ -13,27 +13,31 @@ export type BackendResponse = {
   message: string,
   data: any
 }
-
 export type OnSuccessCallback = (response: BackendResponse) => void
 export type OnErrorCallback = 
   (error: any, caught: Observable<void>) => Array<any>
 
+
 export abstract class BackendService {
 
-  private static requestOptions: RequestOptions = new RequestOptions({
-    headers: new Headers({ 
-      'Accept': 'application/json'
-    }),
-    withCredentials: true
-  })
+  private static readonly requestOptions: RequestOptions = 
+    new RequestOptions({
+      headers: new Headers({ 
+        'Accept': 'application/json'
+      }),
+      withCredentials: true
+    })
 
-  private static defaultOnErrorCallback: OnErrorCallback = 
+  private static readonly defaultOnErrorCallback: OnErrorCallback = 
     (error: any, caught: Observable<void>) => {
       Observable.throw(error)
       return []
     }
 
-  constructor(private servicesBaseUrl: any, private http: Http) {
+  constructor(
+    private readonly servicesBaseUrl: any, 
+    private readonly http: Http
+  ) {
   }
 
   read(
@@ -55,7 +59,7 @@ export abstract class BackendService {
         BackendService.requestOptions
       )
       .map((response: Response) => {
-        let result = this.parseHttpResponseToJson(response)
+        const result = this.parseHttpResponseToJson(response)
         onSuccessCallback(result)
       })
       .catch(onErrorCallback)
@@ -71,7 +75,7 @@ export abstract class BackendService {
     this.http
       .post(this.servicesBaseUrl + service, data, BackendService.requestOptions)
       .map((response: Response) => {
-        let result = this.parseHttpResponseToJson(response)
+        const result = this.parseHttpResponseToJson(response)
         onSuccessCallback(result)
       })
       .catch(onErrorCallback)
@@ -90,7 +94,7 @@ export abstract class BackendService {
         BackendService.requestOptions
       )
       .map((response: Response) => {
-        let result = this.parseHttpResponseToJson(response)
+        const result = this.parseHttpResponseToJson(response)
         onSuccessCallback(result)
       })
       .catch(onErrorCallback)
@@ -98,7 +102,7 @@ export abstract class BackendService {
   }
 
   private parseHttpResponseToJson(response: Response): any {
-    let responseBody = response['_body'].toString()
+    const responseBody = response['_body'].toString()
     let responseJson = JSON.parse(responseBody)
     if (responseJson.meta !== undefined) {
       responseJson = {

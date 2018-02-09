@@ -29,5 +29,5 @@ export abstract class ActionConfirmationModalComponent extends MzBaseModal
     super()
   }
 
-  abstract onActionConfirmed(): void
+  protected abstract onActionConfirmed(): void
 }

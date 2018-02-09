@@ -1,6 +1,7 @@
 export abstract class FormErrorsTranslationService {
   constructor(
-    private translations: any, private _translatedMessages: any
+    private readonly translations: any, 
+    private _translatedMessages: any
   ) {
   }
 

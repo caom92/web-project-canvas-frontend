@@ -3,8 +3,8 @@ import { FormGroup } from '@angular/forms'
 
 // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
 export function getTodayFormattedDate(): string {
-  let today = new Date()
-  let year = today.getUTCFullYear().toString()
+  const today = new Date()
+  const year = today.getUTCFullYear().toString()
   let month = (today.getMonth() + 1).toString()
   let day = today.getUTCDate().toString()
 
@@ -72,8 +72,8 @@ export function getDatePickerConfig(lang: string): any {
 export function comparePasswordInputs(
   group: FormGroup, entryField: string, confirmationField: string
 ) : any {
-  let password = group.controls[entryField].value 
-  let passwordConfirmation = 
+  const password = group.controls[entryField].value 
+  const passwordConfirmation = 
     group.controls[confirmationField].value
   
   // hay que retornar una bandera de error que activara el 
@@ -86,7 +86,7 @@ export function parseListElementsToAnotherType<I, O>(
   list: Array<I>, map: (object: I) => O
 ): Array<O> 
 {
-  let parsedData: Array<O> = []
+  const parsedData: Array<O> = []
   for (let object of list) {
     parsedData.push(map(object))
   }

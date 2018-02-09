@@ -22,11 +22,14 @@ export function checkAuthenticationOnNav(router: UIRouter, injector: Injector) {
     { to: '*' },
     function(transition: Transition) {
       const stateService = transition.router.stateService
-      let sourceState = transition.$from()
-      let destinationState = transition.$to()
-      let isComingFromOutside = sourceState.name.length == 0
-      let isComingFromLogIn = sourceState.name == 'login'
-      let isGoingToLogIn = destinationState.name == 'login'
+      const sourceState = transition.$from()
+      const destinationState = transition.$to()
+      const isComingFromOutside = sourceState.name.length == 0
+      const isComingFromLogIn = sourceState.name == 'login'
+      const isGoingToLogIn = destinationState.name == 'login'
+      const isUserLoggedIn = () =>
+        localStorage.is_logged_in !== undefined
+        && localStorage.is_logged_in !== 'false'
 
       if (!isComingFromOutside && !isGoingToLogIn) {
         return (isUserLoggedIn()) ? true : stateService.target('login')
@@ -34,12 +37,5 @@ export function checkAuthenticationOnNav(router: UIRouter, injector: Injector) {
 
       return true
     }  
-  )
-}
-
-function isUserLoggedIn() {
-  return (
-    localStorage.is_logged_in !== undefined 
-    && localStorage.is_logged_in !== 'false'
   )
 }

@@ -11,7 +11,7 @@ export class ProgressModalComponent extends MzBaseModal {
   @Language()
   lang: string
 
-  private options = {
+  private readonly options = {
     dismissable: false
   }
 

@@ -1,7 +1,9 @@
 export abstract class GlobalMembersService {
   private _isSpinnerVisible: boolean = true
   private _isSideNavVisible: boolean = false
-  private _navBarColor: string = 'green'
+
+  constructor(private readonly _navBarColor: string = 'green') {
+  }
 
   get isSideNavVisible(): boolean {
     return this._isSideNavVisible

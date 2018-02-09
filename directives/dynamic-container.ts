@@ -5,7 +5,7 @@ import { Directive, ViewContainerRef } from '@angular/core';
   selector: '[dynamic-component-container]',
 })
 export class DynamicComponentContainerDirective {
-  constructor(private view: ViewContainerRef) {
+  constructor(private readonly view: ViewContainerRef) {
   }
 
   getView(): ViewContainerRef {

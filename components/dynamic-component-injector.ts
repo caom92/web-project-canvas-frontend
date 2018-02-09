@@ -11,17 +11,17 @@ import {
 
 export class DynamicComponentInjector {
   @ViewChild(DynamicComponentContainerDirective) 
-  private targetContainer: DynamicComponentContainerDirective
+  private readonly targetContainer: DynamicComponentContainerDirective
 
-  constructor(private factoryResolver: ComponentFactoryResolver) {
+  constructor(private readonly factoryResolver: ComponentFactoryResolver) {
   }
 
   injectComponent(componentClass: Type<any>, instanceData: any = {}): any {
-    let componentFactory = 
+    const componentFactory = 
       this.factoryResolver.resolveComponentFactory(componentClass)
-    let targetView = this.targetContainer.getView()
+    const targetView = this.targetContainer.getView()
     targetView.clear()
-    let componentInstanceRef = targetView.createComponent(componentFactory)
+    const componentInstanceRef = targetView.createComponent(componentFactory)
     
     for (let i in instanceData) {
       componentInstanceRef.instance[i] = instanceData[i]
