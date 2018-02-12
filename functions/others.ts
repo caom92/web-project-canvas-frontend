@@ -82,23 +82,23 @@ export function comparePasswordInputs(
     null : { arePasswordsDifferent: true }
 }
 
-export function parseListElementsToAnotherType<I, O>(
-  list: Array<I>, map: (object: I) => O
-): Array<O> 
+export function parseListElementsType<CurrentType, FinalType>(
+  list: Array<CurrentType>, map: (element: CurrentType) => FinalType
+): Array<FinalType> 
 {
-  const parsedData: Array<O> = []
-  for (let object of list) {
-    parsedData.push(map(object))
+  const parsedData: Array<FinalType> = []
+  for (let element of list) {
+    parsedData.push(map(element))
   }
   return parsedData
 }
 
-export function getArrayElementBySearchFilter<T>(
-  list: Array<T>, filter: (object: T) => boolean
-): T {
-  for (let object of list) {
-    if (filter(object)) {
-      return object
+export function searchArrayElement<ElementType>(
+  list: Array<ElementType>, filter: (element: ElementType) => boolean
+): ElementType {
+  for (let element of list) {
+    if (filter(element)) {
+      return element
     }
   }
   return null
