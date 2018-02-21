@@ -104,6 +104,9 @@ export abstract class BackendService {
   private parseHttpResponseToJson(response: Response): any {
     const responseBody = response['_body'].toString()
     let responseJson = JSON.parse(responseBody)
+
+    // revisamos si el backend esta respondiendo con una versión vieja del
+    // JSON de respuesta y si es así, lo convertimos a la versión nueva
     if (responseJson.meta !== undefined) {
       responseJson = {
         returnCode: responseJson.meta.return_code,
@@ -116,9 +119,8 @@ export abstract class BackendService {
 
   private parseJsonToUrlParams(json: any): string {
     let params = ''
-    for (let i in json) {
+    for (let i in json)
       params += '/' + json[i]
-    }
     return params
   }
 }

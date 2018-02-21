@@ -55,17 +55,21 @@ export function getDatePickerConfig(lang: string): any {
       "weekdaysLetter": [
         "D", "L", "M", "R", "J", "V", "S"
       ],
-      today: "Hoy",
-      clear: "Borrar",
-      close: "Cerrar",
-      format: "dddd, dd mmmm, yyyy",
-      formatSubmit: "yyyy-mm-dd"
+      "today": "Hoy",
+      "clear": "Borrar",
+      "close": "Cerrar",
+      "format": "dddd, dd mmmm, yyyy",
+      "formatSubmit": "yyyy-mm-dd",
+      "selectYears": true,
+      "selectMonths": true,
     }
     : {
       "closeOnSelect": true,
       "closeOnClear": false,
       "format": "dddd, dd mmmm, yyyy",
-      "formatSubmit": "yyyy-mm-dd"
+      "formatSubmit": "yyyy-mm-dd",
+      "selectYears": true,
+      "selectMonths": true,
     }
 }
 
@@ -73,8 +77,7 @@ export function comparePasswordInputs(
   group: FormGroup, entryField: string, confirmationField: string
 ) : any {
   const password = group.controls[entryField].value 
-  const passwordConfirmation = 
-    group.controls[confirmationField].value
+  const passwordConfirmation = group.controls[confirmationField].value
   
   // hay que retornar una bandera de error que activara el 
   // mensaje de error a desplegar
@@ -87,19 +90,16 @@ export function parseListElementsType<CurrentType, FinalType>(
 ): Array<FinalType> 
 {
   const parsedData: Array<FinalType> = []
-  for (let element of list) {
+  for (let element of list)
     parsedData.push(map(element))
-  }
   return parsedData
 }
 
 export function searchArrayElement<ElementType>(
   list: Array<ElementType>, filter: (element: ElementType) => boolean
 ): ElementType {
-  for (let element of list) {
-    if (filter(element)) {
+  for (let element of list)
+    if (filter(element)) 
       return element
-    }
-  }
   return null
 }

@@ -1,4 +1,4 @@
-import { L10nConfig, StorageStrategy, ProviderType } from 'angular-l10n'
+import { L10nConfig, StorageStrategy, ProviderType, Language } from 'angular-l10n'
 
 export const languageConfig: L10nConfig = {
   locale: {
@@ -7,7 +7,7 @@ export const languageConfig: L10nConfig = {
       { code: 'en', dir: 'ltr' }
     ],
     language: 'es',
-    storage: StorageStrategy.Local
+    storage: StorageStrategy.Cookie
   },
   translation: {
     providers: [
