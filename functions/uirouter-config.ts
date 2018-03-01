@@ -2,7 +2,8 @@ import { Injector } from '@angular/core'
 import { UIRouter, Transition } from "@uirouter/angular"
 
 
-export function checkAuthenticationOnNav(router: UIRouter, injector: Injector) {
+export function checkAuthenticationOnNav(router: UIRouter, injector: Injector) 
+{
   // ui-router tiene un mecanismo que nos permite ejecutar codigo cuando 
   // se cambia de un estado a otro, en este caso, onStart se ejecuta 
   // despues de salir del estado anterior y antes de entrar al estado 

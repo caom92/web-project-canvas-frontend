@@ -2,7 +2,8 @@ import { TranslationService } from 'angular-l10n'
 import { FormGroup } from '@angular/forms'
 
 // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
-export function getTodayFormattedDate(): string {
+export function getTodayFormattedDate(): string 
+{
   const today = new Date()
   const year = today.getUTCFullYear().toString()
   let month = (today.getMonth() + 1).toString()
@@ -24,7 +25,8 @@ export function getTodayFormattedDate(): string {
 
 export function getServiceMessage(
   textTranslator: TranslationService, service: string, code: number
-): string {
+): string 
+{
   let message = textTranslator.translate(`${ service } response ${ code }`)
   if (message === 'Translation Error') {
     message = textTranslator.translate(`server response ${ code }`)
@@ -32,7 +34,8 @@ export function getServiceMessage(
   return message
 }
 
-export function getDatePickerConfig(lang: string): any {
+export function getDatePickerConfig(lang: string): any 
+{
   return (lang === 'es') ? 
     {
       "closeOnSelect": true,
@@ -61,7 +64,7 @@ export function getDatePickerConfig(lang: string): any {
       "format": "dddd, dd mmmm, yyyy",
       "formatSubmit": "yyyy-mm-dd",
       "selectYears": true,
-      "selectMonths": true,
+      "selectMonths": true
     }
     : {
       "closeOnSelect": true,
@@ -69,13 +72,14 @@ export function getDatePickerConfig(lang: string): any {
       "format": "dddd, dd mmmm, yyyy",
       "formatSubmit": "yyyy-mm-dd",
       "selectYears": true,
-      "selectMonths": true,
+      "selectMonths": true
     }
 }
 
 export function comparePasswordInputs(
   group: FormGroup, entryField: string, confirmationField: string
-) : any {
+) : any 
+{
   const password = group.controls[entryField].value 
   const passwordConfirmation = group.controls[confirmationField].value
   
@@ -83,6 +87,17 @@ export function comparePasswordInputs(
   // mensaje de error a desplegar
   return (password === passwordConfirmation) ? 
     null : { arePasswordsDifferent: true }
+}
+
+
+// TODO: probar esta funcion
+export function parse<CurrentType, FinalType>(
+  data: CurrentType, parseDescriptor: Array<[string, string]>
+): FinalType {
+  let parsedData: FinalType
+  for (let keys of parseDescriptor)
+    parsedData[keys[0]] = data[keys[1]]
+  return parsedData
 }
 
 export function parseListElementsType<CurrentType, FinalType>(
@@ -97,7 +112,8 @@ export function parseListElementsType<CurrentType, FinalType>(
 
 export function searchArrayElement<ElementType>(
   list: Array<ElementType>, filter: (element: ElementType) => boolean
-): ElementType {
+): ElementType 
+{
   for (let element of list)
     if (filter(element)) 
       return element

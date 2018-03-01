@@ -18,8 +18,8 @@ export type OnErrorCallback =
   (error: any, caught: Observable<void>) => Array<any>
 
 
-export abstract class BackendService {
-
+export abstract class BackendService 
+{
   private static readonly requestOptions: RequestOptions = 
     new RequestOptions({
       headers: new Headers({ 

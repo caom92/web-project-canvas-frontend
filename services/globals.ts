@@ -1,4 +1,5 @@
-export abstract class GlobalMembersService {
+export abstract class GlobalMembersService 
+{
   private _isSpinnerVisible: boolean = true
   private _isSideNavVisible: boolean = false
 
