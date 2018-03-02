@@ -1,16 +1,19 @@
-import { MzBaseModal } from 'ng2-materialize'
-import { LocaleService, TranslationService } from 'angular-l10n'
+import { Component } from '@angular/core'
+import { SubjectModal } from './subject'
+import { LocaleService, TranslationService, Language } from 'angular-l10n'
 
 
-// @Component({
-//   // Para todos los componentes hijos de este componente, se puede usar 
-//   // exactamente la misma vista
-//   templateUrl: '../../templates/modals/action.confirmation.html'
-// })
-export abstract class ActionConfirmationModalComponent extends MzBaseModal
+@Component({
+  templateUrl: '../../templates/modals/action-confirmation.html'
+})
+export class ActionConfirmationModalComponent extends SubjectModal
 {
-  protected _title: string = null
-  protected _message: string = null
+  @Language()
+  lang: string
+  
+  title: string = null
+  message: string = null
+  context: any
 
   constructor(
     public locale: LocaleService,
@@ -19,13 +22,7 @@ export abstract class ActionConfirmationModalComponent extends MzBaseModal
     super()
   }
 
-  set title(value: string) {
-    this._title = value
+  protected onActionConfirmed(): void {
+    this.notifyObservers(this.context)
   }
-
-  set message(value: string) {
-    this._message = value
-  }
-
-  protected abstract onActionConfirmed(): void
 }

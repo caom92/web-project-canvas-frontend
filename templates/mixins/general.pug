@@ -20,7 +20,7 @@ mixin collapsibleItem(title, icon = null)
 mixin button(type, label, icon = null)
   button(mz-button type=type)&attributes(attributes)=label
     if icon
-      i(mz-icon-mdi mz-input-prefix '[icon]'=icon)
+      i(mz-icon-mdi '[icon]'=icon '[align]'="'left'")
 
 //- * headers (string): expresion Angular que define el nombre del atributo del 
 //-   componente Angular que contiene el arreglo de encabezados de la tabla

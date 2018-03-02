@@ -2,18 +2,17 @@ include ../mixins/general.pug
 
 mz-modal
   mz-modal-header
-    i.yellow-text(mz-icon-mdi '[icon]'='alert')
-    ='{{ title }}'
-  mz-modal-content
-    ='{{ message }}'
+    i.yellow-text(mz-icon-mdi '[icon]'="'alert'" '[size]'="'large'")
+    ='{{ title | translate:lang }}'
+  mz-modal-content('[innerHTML]'='message | translate:lang')
   mz-modal-footer
-    +button('button', '{{ "accept" | translate:lang }}', 'check')(
+    +button('button', '{{ "accept" | translate:lang }}', "'check'")(
       mz-modal-close
       'class'='red-text'
       '[flat]'='true'
       '(click)'='onActionConfirmed()'
     )
-    +button('button', '{{ "cancel" | translate:lang }}', 'close')(
+    +button('button', '{{ "cancel" | translate:lang }}', "'close'")(
       '[flat]'='true'
       mz-modal-close
     )
