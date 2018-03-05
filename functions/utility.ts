@@ -1,5 +1,6 @@
 import { TranslationService } from 'angular-l10n'
 import { FormGroup } from '@angular/forms'
+import { languageConfig } from './l10n-config'
 
 // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
 export function getTodayFormattedDate(): string 
@@ -28,8 +29,11 @@ export function getServiceMessage(
 ): string 
 {
   let message = textTranslator.translate(`${ service } response ${ code }`)
-  if (message === 'Translation Error') {
+  if (message === languageConfig.translation.missingValue) {
     message = textTranslator.translate(`server response ${ code }`)
+    if (message === languageConfig.translation.missingValue) {
+      message = textTranslator.translate(`unknown server error`)
+    }
   }
   return message
 }
