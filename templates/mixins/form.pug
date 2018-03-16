@@ -24,7 +24,8 @@ mixin passwordInput(label, icon = null)
 //-   admitir
 mixin textArea(length, label, icon = null)
   mz-textarea-container
-    i(mz-icon-mdi mz-textarea-prefix '[icon]'=icon)
+    if icon
+      i(mz-icon-mdi mz-textarea-prefix '[icon]'=icon)
     textarea(mz-textarea
       '[label]'=label
       length=length
@@ -66,8 +67,11 @@ mixin radioButton(element, group)
 //-     optionsList cuyo valor sera retornado al componente cuando dicha opcion 
 //-     haya sido elegida por el usuario
 mixin select(label, optionsList, optionsProperties = {})
-  - var optionName = (optionsProperties.name) ? optionsProperties.name : ''
-  - var optionValue = (optionsProperties.value) ? optionsProperties.value : ''
+  - 
+    var optionName = (optionsProperties.name) ? 
+      '.' + optionsProperties.name : ''
+    var optionValue = (optionsProperties.value) ? 
+      '.' + optionsProperties.value : ''
   mz-select-container
     select(mz-select
       '[label]'=label

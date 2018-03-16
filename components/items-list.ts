@@ -117,3 +117,38 @@ export abstract class ItemsListAbstractComponent
     }
   }
 }
+
+
+export abstract class ChildItemsListAbstractComponent 
+  extends ItemsListAbstractComponent
+{
+  constructor(
+    locale: LocaleService,
+    textTranslator: TranslationService,
+    server: BackendService,
+    modalManager: MzModalService,
+    toastManager: RoundedToastService
+  ) {
+    super(locale, textTranslator, server, modalManager, toastManager)
+  }
+
+  protected abstract pushItemToListByParentId(parentId: number, item: any): void
+
+  // override ItemsListAbstractComponent
+  protected onElementAddedNotificationReceived(context: {
+    parentId: number,
+    item: any
+  }): void {
+    this.pushItemToListByParentId(context.parentId, context.item)
+  }
+
+  // override ItemsListAbstractComponent
+  protected onElementEditedNotificationReceived(context: {
+    idx: number,
+    parentId: number,
+    item: any
+  }): void {
+    this.list.splice(context.idx, 1)
+    this.pushItemToListByParentId(context.parentId, context.item)
+  }
+}

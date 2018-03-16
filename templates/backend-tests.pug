@@ -1,0 +1,7 @@
+include mixins/general.pug
+
+div.row: div.col.s12
+  +table('tableHeaders')
+    tr('*ngFor'='let test of unitTests')
+      td: ='{{ test.description }}'
+      td: ='{{ test.passed }}'
