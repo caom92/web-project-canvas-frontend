@@ -15,7 +15,7 @@ export abstract class UnitTest
   public static server: BackendService
   public static progressModal: ComponentRef<MzBaseModal>
 
-  protected _passed: boolean = false
+  protected _passed: boolean = null
 
   constructor(
     public readonly description: string,
@@ -83,6 +83,7 @@ export class HttpPostUnitTest extends UnitTest
     )
   }
 }
+
 
 export class HttpDeleteUnitTest extends UnitTest
 {

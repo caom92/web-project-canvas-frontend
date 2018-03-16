@@ -93,18 +93,18 @@ export abstract class ItemsListAbstractComponent
     return () => {}
   }
 
-  private onElementDeletedNotificationReceived(context: { 
+  protected onElementDeletedNotificationReceived(context: { 
     idx: number, tableId: number 
   }): void {
     this.progressModal = this.modalManager.open(ProgressModalComponent)
     this.elementToDeleteIdx = context.idx
     this.server.delete(
       this.deleteElementServiceName, { id: context.tableId }, 
-      this.onDeleteCategoryResponse
+      this.onDeleteElementResponse
     )
   }
 
-  private get onDeleteCategoryResponse(): OnSuccessCallback {
+  private get onDeleteElementResponse(): OnSuccessCallback {
     return (response: BackendResponse) => {
       this.progressModal.instance.modalComponent.close()
       this.toastManager.show(getServiceMessage(
