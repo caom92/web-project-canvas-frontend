@@ -54,6 +54,7 @@ export abstract class ItemsListAbstractComponent
   onNotificationReceived(context: {
     addElementContext: any, deleteElementContext: any, editElementContext: any
   }): void {
+    console.log(context)
     if (context.addElementContext !== undefined)
       this.onElementAddedNotificationReceived(context.addElementContext)
 
