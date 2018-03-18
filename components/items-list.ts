@@ -54,7 +54,6 @@ export abstract class ItemsListAbstractComponent
   onNotificationReceived(context: {
     addElementContext: any, deleteElementContext: any, editElementContext: any
   }): void {
-    console.log(context)
     if (context.addElementContext !== undefined)
       this.onElementAddedNotificationReceived(context.addElementContext)
 
@@ -149,6 +148,7 @@ export abstract class ChildItemsListAbstractComponent
     parentId: number,
     item: any
   }): void {
+    // TODO: insertar en la posicion correcta en el arreglo
     this.list.splice(context.idx, 1)
     this.pushItemToListByParentId(context.parentId, context.item)
   }
