@@ -1,4 +1,4 @@
-import { OnInit, ComponentRef } from '@angular/core'
+import { OnInit, ComponentRef, EventEmitter } from '@angular/core'
 import { MzBaseModal, MzModalService } from 'ng2-materialize'
 import { LocaleService, TranslationService } from 'angular-l10n'
 import { FormBuilder, FormGroup } from '@angular/forms'
@@ -21,14 +21,13 @@ import {
 import { 
   getServiceMessage
 } from '../../web-project-canvas-frontend/functions/utility'
-import { 
-  SubjectModal 
-} from './../../web-project-canvas-frontend/components/modals/subject'
 
 
 export abstract class AddItemAbstractModalComponent 
-  extends SubjectModal implements OnInit {
+  extends MzBaseModal implements OnInit {
   
+  readonly serviceResponse: EventEmitter<any> = new EventEmitter()
+
   protected form: FormGroup
   protected progressModal: ComponentRef<MzBaseModal>
 
@@ -72,7 +71,7 @@ export abstract class AddItemAbstractModalComponent
       ))
 
       if (response.returnCode === 0) {
-        this.notifyObservers(this.getObserverInputData(response))
+        this.serviceResponse.emit(this.getObserverInputData(response))
         this.modalComponent.close()
       }
     }

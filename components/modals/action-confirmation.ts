@@ -1,12 +1,12 @@
-import { Component } from '@angular/core'
-import { SubjectModal } from './subject'
+import { Component, EventEmitter } from '@angular/core'
 import { LocaleService, TranslationService, Language } from 'angular-l10n'
+import { MzBaseModal } from 'ng2-materialize'
 
 
 @Component({
   templateUrl: '../../templates/modals/action-confirmation.html'
 })
-export class ActionConfirmationModalComponent extends SubjectModal {
+export class ActionConfirmationModalComponent extends MzBaseModal {
   
   @Language()
   lang: string
@@ -14,15 +14,16 @@ export class ActionConfirmationModalComponent extends SubjectModal {
   title: string = null
   message: string = null
   context: any
+  readonly actionConfirmation: EventEmitter<any> = new EventEmitter()
 
   constructor(
-    locale: LocaleService,
-    textTranslator: TranslationService
+    public locale: LocaleService,
+    public textTranslator: TranslationService
   ) {
     super()
   }
 
   protected onActionConfirmed(): void {
-    this.notifyObservers(this.context)
+    this.actionConfirmation.emit(this.context)
   }
 }

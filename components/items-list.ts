@@ -3,17 +3,17 @@ import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { BackendService } from './../services/backend'
 import { LocaleService, TranslationService } from 'angular-l10n'
 import { ProgressModalComponent } from './../components/modals/please-wait'
-import { ObserverComponent } from './../components/observer'
 import { 
   ActionConfirmationModalComponent 
 } from './../components/modals/action-confirmation'
 import { OnSuccessCallback, BackendResponse } from './../services/backend'
 import { RoundedToastService } from './../services/toast'
 import { getServiceMessage } from './../functions/utility'
+import { AddItemAbstractModalComponent } from './add-item'
 
 
 export abstract class ItemsListAbstractComponent
-  implements OnChanges, OnInit, ObserverComponent {
+  implements OnChanges, OnInit {
     
   protected elementToDeleteIdx: number
   protected progressModal: ComponentRef<MzBaseModal>
@@ -38,23 +38,6 @@ export abstract class ItemsListAbstractComponent
   ngOnChanges(): void {
     // no hacer nada es el funcionamiento base
   }
-  
-  // override ObserverComponent
-  onNotificationReceived(context: {
-    addElementContext: any, deleteElementContext: any, editElementContext: any
-  }): void {
-    if (context.addElementContext !== undefined) {
-      this.onElementAddedNotificationReceived(context.addElementContext)
-    }
-
-    if (context.deleteElementContext !== undefined) {
-      this.onElementDeletedNotificationReceived(context.deleteElementContext)
-    }
-
-    if (context.editElementContext !== undefined) {
-      this.onElementEditedNotificationReceived(context.editElementContext)
-    }
-  }
 
   protected abstract get emptyListMessage(): string
   protected abstract get addElementModalComponent(): any
@@ -62,49 +45,66 @@ export abstract class ItemsListAbstractComponent
   protected abstract get deleteConfirmationModalMessage(): string
   protected abstract get deleteElementServiceName(): string
   protected abstract get editElementModalComponent(): any
-  protected abstract getAddElementModalInput(): any
-  protected abstract onElementAddedNotificationReceived(context: any): void
+  protected abstract get addElementModalInput(): any
+  protected abstract get onElementAddedNotificationReceived(): 
+    (context: any) => void
   protected abstract getEditElementModalInput(idx: number, context: any): any
-  protected abstract onElementEditedNotificationReceived(context: any): void
+  protected abstract get onElementEditedNotificationReceived(): 
+    (context: any) => void
   
   protected onAddButtonClicked(): void {
-    this.modalManager.open(
-      this.addElementModalComponent, this.getAddElementModalInput()
+    const modalRef = this.modalManager.open(
+      this.addElementModalComponent, this.addElementModalInput
     )
+
+    const modal: AddItemAbstractModalComponent =
+      <AddItemAbstractModalComponent> modalRef.instance
+    modal.serviceResponse.subscribe(this.onElementAddedNotificationReceived)
   }
 
   protected onEditButtonClicked(idx: number, element: any): void {
-    this.modalManager.open(
+    const modalRef = this.modalManager.open(
       this.editElementModalComponent, 
       this.getEditElementModalInput(idx, element)
     )
+
+    const modal: AddItemAbstractModalComponent =
+      <AddItemAbstractModalComponent> modalRef.instance
+    modal.serviceResponse.subscribe(this.onElementEditedNotificationReceived)
   }
 
   protected onDeleteButtonClicked(idx: number, element: any): void {
-    this.modalManager.open(ActionConfirmationModalComponent, {
-      observers: [ this ],
+    const modalRef = this.modalManager.open(ActionConfirmationModalComponent, {
       title: this.deleteConfirmationModalTitle,
       message: this.deleteConfirmationModalMessage,
-      context: { deleteElementContext: {
+      context: { 
         tableId: element.id,
         idx: idx
-      }}
+      }
     })
+
+    const modal: ActionConfirmationModalComponent =
+      <ActionConfirmationModalComponent> modalRef.instance
+    modal.actionConfirmation.subscribe(
+      this.onElementDeletedNotificationReceived
+    )
   }
 
   protected get onTranslationChanged(): () => void {
     return () => {}
   }
 
-  protected onElementDeletedNotificationReceived(context: { 
+  protected get onElementDeletedNotificationReceived(): (context: { 
     idx: number, tableId: number 
-  }): void {
-    this.progressModal = this.modalManager.open(ProgressModalComponent)
-    this.elementToDeleteIdx = context.idx
-    this.server.delete(
-      this.deleteElementServiceName, { id: context.tableId }, 
-      this.onDeleteElementResponse
-    )
+  }) => void {
+    return (context) => {
+      this.progressModal = this.modalManager.open(ProgressModalComponent)
+      this.elementToDeleteIdx = context.idx
+      this.server.delete(
+        this.deleteElementServiceName, { id: context.tableId }, 
+        this.onDeleteElementResponse
+      )
+    }
   }
 
   private get onDeleteElementResponse(): OnSuccessCallback {
@@ -138,21 +138,25 @@ export abstract class ChildItemsListAbstractComponent
   protected abstract pushItemToListByParentId(parentId: number, item: any): void
 
   // override ItemsListAbstractComponent
-  protected onElementAddedNotificationReceived(context: {
+  protected get onElementAddedNotificationReceived(): (context: {
     parentId: number,
     item: any
-  }): void {
-    this.pushItemToListByParentId(context.parentId, context.item)
+  }) => void {
+    return (context) => {
+      this.pushItemToListByParentId(context.parentId, context.item)
+    }
   }
 
   // override ItemsListAbstractComponent
-  protected onElementEditedNotificationReceived(context: {
+  protected get onElementEditedNotificationReceived(): (context: {
     idx: number,
     parentId: number,
     item: any
-  }): void {
-    // TODO: insertar en la posicion correcta en el arreglo
-    this.list.splice(context.idx, 1)
-    this.pushItemToListByParentId(context.parentId, context.item)
+  }) => void {
+    return (context) => {
+      // TODO: insertar en la posicion correcta en el arreglo
+      this.list.splice(context.idx, 1)
+      this.pushItemToListByParentId(context.parentId, context.item)
+    }
   }
 }
