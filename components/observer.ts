@@ -1,4 +1,3 @@
-export interface ObserverComponent
-{
+export interface ObserverComponent {
   onNotificationReceived(context: any): void
 }

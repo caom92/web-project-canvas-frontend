@@ -1,5 +1,5 @@
-export abstract class FormErrorsTranslationService 
-{
+export abstract class FormErrorsTranslationService {
+  
   constructor(
     private readonly translations: any, 
     private _translatedMessages: any

@@ -3,8 +3,7 @@ import { FormGroup } from '@angular/forms'
 import { languageConfig } from './l10n-config'
 
 // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
-export function getTodayFormattedDate(): string 
-{
+export function getTodayFormattedDate(): string {
   const today = new Date()
   const year = today.getUTCFullYear().toString()
   let month = (today.getMonth() + 1).toString()
@@ -26,8 +25,7 @@ export function getTodayFormattedDate(): string
 
 export function getServiceMessage(
   textTranslator: TranslationService, service: string, code: number
-): string 
-{
+): string {
   let message = textTranslator.translate(`${ service } response ${ code }`)
   if (message === languageConfig.translation.missingValue) {
     message = textTranslator.translate(`server response ${ code }`)
@@ -38,52 +36,50 @@ export function getServiceMessage(
   return message
 }
 
-export function getDatePickerConfig(lang: string): any 
-{
+export function getDatePickerConfig(lang: string): any {
   return (lang === 'es') ? 
     {
-      "closeOnSelect": true,
-      "closeOnClear": false,
-      "monthsFull": [
-        "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio",
-        "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+      'closeOnSelect': true,
+      'closeOnClear': false,
+      'monthsFull': [
+        'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio',
+        'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
       ],
-      "monthsShort": [
-        "Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep",
-        "Oct", "Nov", "Dec"
+      'monthsShort': [
+        'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep',
+        'Oct', 'Nov', 'Dec'
       ],
-      "weekdaysFull": [
-        "Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes",
-        "Sábado"
+      'weekdaysFull': [
+        'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes',
+        'Sábado'
       ],
-      "weekdaysShort": [
-        "Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"
+      'weekdaysShort': [
+        'Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'
       ],
-      "weekdaysLetter": [
-        "D", "L", "M", "R", "J", "V", "S"
+      'weekdaysLetter': [
+        'D', 'L', 'M', 'R', 'J', 'V', 'S'
       ],
-      "today": "Hoy",
-      "clear": "Borrar",
-      "close": "Cerrar",
-      "format": "dddd, dd mmmm, yyyy",
-      "formatSubmit": "yyyy-mm-dd",
-      "selectYears": true,
-      "selectMonths": true
+      'today': 'Hoy',
+      'clear': 'Borrar',
+      'close': 'Cerrar',
+      'format': 'dddd, dd mmmm, yyyy',
+      'formatSubmit': 'yyyy-mm-dd',
+      'selectYears': true,
+      'selectMonths': true
     }
     : {
-      "closeOnSelect": true,
-      "closeOnClear": false,
-      "format": "dddd, dd mmmm, yyyy",
-      "formatSubmit": "yyyy-mm-dd",
-      "selectYears": true,
-      "selectMonths": true
+      'closeOnSelect': true,
+      'closeOnClear': false,
+      'format': 'dddd, dd mmmm, yyyy',
+      'formatSubmit': 'yyyy-mm-dd',
+      'selectYears': true,
+      'selectMonths': true
     }
 }
 
 export function comparePasswordInputs(
   group: FormGroup, entryField: string, confirmationField: string
-) : any 
-{
+): any {
   const password = group.controls[entryField].value 
   const passwordConfirmation = group.controls[confirmationField].value
   
@@ -99,27 +95,29 @@ export function parse<CurrentType, FinalType>(
   data: CurrentType, parseDescriptor: Array<[string, string]>
 ): FinalType {
   let parsedData: FinalType
-  for (let keys of parseDescriptor)
+  for (const keys of parseDescriptor) {
     parsedData[keys[0]] = data[keys[1]]
+  }
   return parsedData
 }
 
 export function parseListElementsType<CurrentType, FinalType>(
   list: Array<CurrentType>, map: (element: CurrentType) => FinalType
-): Array<FinalType> 
-{
+): Array<FinalType> {
   const parsedData: Array<FinalType> = []
-  for (let element of list)
+  for (const element of list) {
     parsedData.push(map(element))
+  }
   return parsedData
 }
 
 export function searchArrayElement<ElementType>(
   list: Array<ElementType>, filter: (element: ElementType) => boolean
-): ElementType 
-{
-  for (let element of list)
-    if (filter(element)) 
+): ElementType {
+  for (const element of list) {
+    if (filter(element)) {
       return element
+    }
+  }
   return null
 }

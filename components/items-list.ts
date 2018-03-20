@@ -13,8 +13,8 @@ import { getServiceMessage } from './../functions/utility'
 
 
 export abstract class ItemsListAbstractComponent
-  implements OnChanges, OnInit, ObserverComponent
-{
+  implements OnChanges, OnInit, ObserverComponent {
+    
   protected elementToDeleteIdx: number
   protected progressModal: ComponentRef<MzBaseModal>
   protected list: Array<any> = []
@@ -27,17 +27,6 @@ export abstract class ItemsListAbstractComponent
     protected readonly toastManager: RoundedToastService
   ) {
   }
-
-  protected abstract get emptyListMessage(): string
-  protected abstract get addElementModalComponent(): any
-  protected abstract get deleteConfirmationModalTitle(): string
-  protected abstract get deleteConfirmationModalMessage(): string
-  protected abstract get deleteElementServiceName(): string
-  protected abstract get editElementModalComponent(): any
-  protected abstract getAddElementModalInput(): any
-  protected abstract onElementAddedNotificationReceived(context: any): void
-  protected abstract getEditElementModalInput(idx: number, context: any): any
-  protected abstract onElementEditedNotificationReceived(context: any): void
 
   // override OnInit
   ngOnInit(): void {
@@ -54,15 +43,29 @@ export abstract class ItemsListAbstractComponent
   onNotificationReceived(context: {
     addElementContext: any, deleteElementContext: any, editElementContext: any
   }): void {
-    if (context.addElementContext !== undefined)
+    if (context.addElementContext !== undefined) {
       this.onElementAddedNotificationReceived(context.addElementContext)
+    }
 
-    if (context.deleteElementContext !== undefined)
+    if (context.deleteElementContext !== undefined) {
       this.onElementDeletedNotificationReceived(context.deleteElementContext)
+    }
 
-    if (context.editElementContext !== undefined) 
+    if (context.editElementContext !== undefined) {
       this.onElementEditedNotificationReceived(context.editElementContext)
+    }
   }
+
+  protected abstract get emptyListMessage(): string
+  protected abstract get addElementModalComponent(): any
+  protected abstract get deleteConfirmationModalTitle(): string
+  protected abstract get deleteConfirmationModalMessage(): string
+  protected abstract get deleteElementServiceName(): string
+  protected abstract get editElementModalComponent(): any
+  protected abstract getAddElementModalInput(): any
+  protected abstract onElementAddedNotificationReceived(context: any): void
+  protected abstract getEditElementModalInput(idx: number, context: any): any
+  protected abstract onElementEditedNotificationReceived(context: any): void
   
   protected onAddButtonClicked(): void {
     this.modalManager.open(
@@ -111,7 +114,7 @@ export abstract class ItemsListAbstractComponent
         this.textTranslator, this.deleteElementServiceName, response.returnCode
       ))
 
-      if (response.returnCode == 0) {
+      if (response.returnCode === 0) {
         this.list.splice(this.elementToDeleteIdx, 1)
       }
     }
@@ -120,8 +123,8 @@ export abstract class ItemsListAbstractComponent
 
 
 export abstract class ChildItemsListAbstractComponent 
-  extends ItemsListAbstractComponent
-{
+  extends ItemsListAbstractComponent {
+    
   constructor(
     locale: LocaleService,
     textTranslator: TranslationService,

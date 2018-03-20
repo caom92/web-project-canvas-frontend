@@ -10,6 +10,7 @@ import {
 
 
 export class DynamicComponentInjector {
+  
   @ViewChild(DynamicComponentContainerDirective) 
   private readonly targetContainer: DynamicComponentContainerDirective
 
@@ -23,8 +24,12 @@ export class DynamicComponentInjector {
     targetView.clear()
     const componentInstanceRef = targetView.createComponent(componentFactory)
     
-    for (let i in instanceData) {
-      componentInstanceRef.instance[i] = instanceData[i]
+    for (const i in instanceData) {
+      if (instanceData.hasOwnProperty(i)) {
+        componentInstanceRef.instance[i] = instanceData[i]
+      } else {
+        throw new Error(`${ i.toString() } is not a member of instanceData`)
+      }
     }
 
     return componentInstanceRef.instance

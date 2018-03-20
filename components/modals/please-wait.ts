@@ -6,8 +6,8 @@ import { MzBaseModal } from 'ng2-materialize'
 @Component({
   templateUrl: '../../templates/modals/please-wait.html'
 })
-export class ProgressModalComponent extends MzBaseModal 
-{
+export class ProgressModalComponent extends MzBaseModal {
+  
   @Language()
   lang: string
 
@@ -16,8 +16,8 @@ export class ProgressModalComponent extends MzBaseModal
   }
 
   constructor(
-    public locale: LocaleService,
-    public textTranslator: TranslationService
+    locale: LocaleService,
+    textTranslator: TranslationService
   ) {
     super()
   }

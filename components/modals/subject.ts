@@ -2,8 +2,8 @@ import { MzBaseModal } from 'ng2-materialize'
 import { ObserverComponent } from './../observer'
 
 
-export abstract class SubjectModal extends MzBaseModal
-{
+export abstract class SubjectModal extends MzBaseModal {
+  
   observers: Array<ObserverComponent> = []
 
   constructor() {
@@ -11,7 +11,8 @@ export abstract class SubjectModal extends MzBaseModal
   }
 
   protected notifyObservers(context: any): void {
-    for (let observer of this.observers)
+    for (const observer of this.observers) {
       observer.onNotificationReceived(context)
+    }
   }
 }

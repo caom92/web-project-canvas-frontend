@@ -6,8 +6,8 @@ import { LocaleService, TranslationService, Language } from 'angular-l10n'
 @Component({
   templateUrl: '../../templates/modals/action-confirmation.html'
 })
-export class ActionConfirmationModalComponent extends SubjectModal
-{
+export class ActionConfirmationModalComponent extends SubjectModal {
+  
   @Language()
   lang: string
   
@@ -16,8 +16,8 @@ export class ActionConfirmationModalComponent extends SubjectModal
   context: any
 
   constructor(
-    public locale: LocaleService,
-    public textTranslator: TranslationService
+    locale: LocaleService,
+    textTranslator: TranslationService
   ) {
     super()
   }

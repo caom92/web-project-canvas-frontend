@@ -1,9 +1,8 @@
 import { Injector } from '@angular/core'
-import { UIRouter, Transition } from "@uirouter/angular"
+import { UIRouter, Transition } from '@uirouter/angular'
 
 
-export function checkAuthenticationOnNav(router: UIRouter, injector: Injector) 
-{
+export function checkAuthenticationOnNav(router: UIRouter, injector: Injector) {
   // ui-router tiene un mecanismo que nos permite ejecutar codigo cuando 
   // se cambia de un estado a otro, en este caso, onStart se ejecuta 
   // despues de salir del estado anterior y antes de entrar al estado 
@@ -25,8 +24,8 @@ export function checkAuthenticationOnNav(router: UIRouter, injector: Injector)
       const stateService = transition.router.stateService
       const sourceState = transition.$from()
       const destinationState = transition.$to()
-      const isComingFromOutside = sourceState.name.length == 0
-      const isGoingToLogIn = destinationState.name == 'login'
+      const isComingFromOutside = sourceState.name.length === 0
+      const isGoingToLogIn = destinationState.name === 'login'
       const isUserLoggedIn = () =>
         localStorage.is_logged_in !== undefined
         && localStorage.is_logged_in !== 'false'

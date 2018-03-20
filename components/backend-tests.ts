@@ -9,38 +9,39 @@ import {
 } from '../../web-project-canvas-frontend/services/backend'
 
 
-export abstract class UnitTest 
-{
-  public static numPendingTests: number
-  public static server: BackendService
-  public static progressModal: ComponentRef<MzBaseModal>
+export abstract class UnitTest {
+
+  static numPendingTests: number
+  static server: BackendService
+  static progressModal: ComponentRef<MzBaseModal>
 
   protected _passed: boolean = null
 
   constructor(
-    public readonly description: string,
+    readonly description: string,
     protected readonly serviceName: string,
     protected readonly serviceInput: any,
     protected readonly callback: (response: BackendResponse) => boolean
   ) {
   }
 
-  public abstract execute(): void
+  abstract execute(): void
 
-  public get passed(): boolean {
+  get passed(): boolean {
     return this._passed
   }
 
   protected finish(): void {
     UnitTest.numPendingTests--
-    if (UnitTest.numPendingTests == 0)
+    if (UnitTest.numPendingTests === 0) {
       UnitTest.progressModal.instance.modalComponent.close()
+    }
   }
 }
 
 
-export class HttpGetUnitTest extends UnitTest
-{
+export class HttpGetUnitTest extends UnitTest {
+
   constructor(
     description: string,
     serviceName: string,
@@ -50,7 +51,7 @@ export class HttpGetUnitTest extends UnitTest
     super(description, serviceName, serviceInput, callback)
   }
 
-  public execute(): void {
+  execute(): void {
     UnitTest.server.read(
       this.serviceName, this.serviceInput, 
       (response: BackendResponse) => {
@@ -62,8 +63,8 @@ export class HttpGetUnitTest extends UnitTest
 }
 
 
-export class HttpPostUnitTest extends UnitTest
-{
+export class HttpPostUnitTest extends UnitTest {
+
   constructor(
     description: string,
     serviceName: string,
@@ -73,7 +74,7 @@ export class HttpPostUnitTest extends UnitTest
     super(description, serviceName, serviceInput, callback)
   }
 
-  public execute(): void {
+  execute(): void {
     UnitTest.server.write(
       this.serviceName, this.serviceInput, 
       (response: BackendResponse) => {
@@ -85,8 +86,8 @@ export class HttpPostUnitTest extends UnitTest
 }
 
 
-export class HttpDeleteUnitTest extends UnitTest
-{
+export class HttpDeleteUnitTest extends UnitTest {
+  
   constructor(
     description: string,
     serviceName: string,
@@ -96,7 +97,7 @@ export class HttpDeleteUnitTest extends UnitTest
     super(description, serviceName, serviceInput, callback)
   }
 
-  public execute(): void {
+  execute(): void {
     UnitTest.server.delete(
       this.serviceName, this.serviceInput, 
       (response: BackendResponse) => {
@@ -108,8 +109,8 @@ export class HttpDeleteUnitTest extends UnitTest
 }
 
 
-export abstract class BackendUnitTestsComponent implements OnInit
-{ 
+export abstract class BackendUnitTestsComponent implements OnInit {
+   
   protected abstract get unitTests(): Array<UnitTest>
 
   protected readonly tableHeaders: Array<string> = [
@@ -124,14 +125,15 @@ export abstract class BackendUnitTestsComponent implements OnInit
   }
 
   // override OnInit
-  public ngOnInit(): void {
+  ngOnInit(): void {
     UnitTest.server = this.server
     UnitTest.numPendingTests = this.unitTests.length
 
     if (this.unitTests.length > 0) {
       UnitTest.progressModal = this.modalManager.open(ProgressModalComponent)
-      for (let test of this.unitTests)
+      for (const test of this.unitTests) {
         test.execute()
+      }
     }
   }
 }

@@ -27,8 +27,8 @@ import {
 
 
 export abstract class AddItemAbstractModalComponent 
-  extends SubjectModal implements OnInit
-{
+  extends SubjectModal implements OnInit {
+  
   protected form: FormGroup
   protected progressModal: ComponentRef<MzBaseModal>
 
@@ -44,18 +44,18 @@ export abstract class AddItemAbstractModalComponent
     super()
   }
 
-  protected abstract get onTranslationChanged(): () => void
-  protected abstract getFormGroup(): FormGroup
-  protected abstract getServiceInputData(): FormData
-  protected abstract get serviceName(): string
-  protected abstract getObserverInputData(response: BackendResponse): any
-
   // override OnInit
   ngOnInit(): void {
     this.textTranslator.translationChanged()
       .subscribe(this.onTranslationChanged)
     this.form = this.getFormGroup()
   }
+
+  protected abstract get onTranslationChanged(): () => void
+  protected abstract getFormGroup(): FormGroup
+  protected abstract getServiceInputData(): FormData
+  protected abstract get serviceName(): string
+  protected abstract getObserverInputData(response: BackendResponse): any
 
   protected onFormSubmit(): void {
     this.progressModal = this.modalManager.open(ProgressModalComponent)
@@ -71,7 +71,7 @@ export abstract class AddItemAbstractModalComponent
         this.textTranslator, this.serviceName, response.returnCode
       ))
 
-      if (response.returnCode == 0) {
+      if (response.returnCode === 0) {
         this.notifyObservers(this.getObserverInputData(response))
         this.modalComponent.close()
       }

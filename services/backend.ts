@@ -8,18 +8,18 @@ import {
 } from '@angular/http'
 
 
-export type BackendResponse = {
+export interface BackendResponse {
   returnCode: number,
   message: string,
   data: any
 }
+
 export type OnSuccessCallback = (response: BackendResponse) => void
 export type OnErrorCallback = 
   (error: any, caught: Observable<void>) => Array<any>
 
+export abstract class BackendService {
 
-export abstract class BackendService 
-{
   private static readonly requestOptions: RequestOptions = 
     new RequestOptions({
       headers: new Headers({ 
@@ -28,17 +28,17 @@ export abstract class BackendService
       withCredentials: true
     })
 
-  private static readonly defaultOnErrorCallback: OnErrorCallback = 
-    (error: any, caught: Observable<void>) => {
-      Observable.throw(error)
-      return []
-    }
-
   constructor(
     private readonly servicesBaseUrl: any, 
     private readonly http: Http
   ) {
   }
+
+  private static readonly defaultOnErrorCallback: OnErrorCallback = 
+    (error: any, caught: Observable<void>) => {
+      Observable.throw(error)
+      return []
+    }
 
   read(
     service: string, 
@@ -119,8 +119,13 @@ export abstract class BackendService
 
   private parseJsonToUrlParams(json: any): string {
     let params = ''
-    for (let i in json)
-      params += '/' + json[i]
+    for (const i in json) {
+      if (json.hasOwnProperty(i)) {
+        params += '/' + json[i]
+      } else {
+        throw new Error(`${ i.toString() } is not a member of json`)
+      }
+    }
     return params
   }
 }

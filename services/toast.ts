@@ -3,8 +3,8 @@ import { MzToastService } from 'ng2-materialize'
 
 
 @Injectable()
-export class RoundedToastService 
-{
+export class RoundedToastService {
+  
   constructor(private readonly toastService: MzToastService) {
   }
 
