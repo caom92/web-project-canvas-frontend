@@ -121,3 +121,15 @@ export function searchArrayElement<ElementType>(
   }
   return null
 }
+
+export function parseJsonToFormData(json: any): FormData {
+  const data = new FormData()
+  for (const key in json) {
+    if (json.hasOwnProperty(key)) {
+      data.append(key.toString(), json[key].toString())
+    } else {
+      throw new Error(`${ key } is not a member of json`)
+    }
+  }
+  return data
+}

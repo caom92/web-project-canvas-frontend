@@ -1,7 +1,23 @@
 include mixins/general.pug
+include mixins/form.pug
+
+div.row 
+  div.col.s5
+    +button('button', 'Lanzar Pruebas')(
+      '(click)'='onLaunchButtonClicked()'
+    )
+  div.col.s5
+    +select("'Credenciales de Usuario'", 'testSuites', { name: 'name' })(
+      '[(ngModel)]'='selectedSuite'
+    )
 
 div.row: div.col.s12
   +table('tableHeaders')
-    tr('*ngFor'='let test of unitTests')
+    tr('*ngFor'='let test of selectedSuite.unitTests')
       td: ='{{ test.description }}'
-      td: ='{{ test.passed }}'
+      td('*ngIf'='test.passed === true') 
+        span.green-text='Sí'
+      td('*ngIf'='test.passed === false')
+        b.red-text='No'
+      td('*ngIf'='test.passed === null')
+        ='N/A'

@@ -7,10 +7,10 @@ include ../mixins/nav-menu.pug
 +navBar(sideNavBtnProperties)('[navbarClass]'='globals.navBarColor')
   block NavBarItems
 
-+sideNav()('[fixed]'="'true'" '*ngIf'="globals.isSideNavVisible === true")
++sideNav()('*ngIf'="globals.isSideNavVisible === true")
   block SideNavItems
 
-div.container('[ngClass]'="{ 'with-sidenav': globals.isSideNavVisible }")
+div.container()
   ui-view('[hidden]'='globals.isSpinnerVisible')
   div.row('[hidden]'='!globals.isSpinnerVisible')
     div.col.s12.m12.center-align

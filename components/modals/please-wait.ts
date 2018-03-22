@@ -12,7 +12,7 @@ export class ProgressModalComponent extends MzBaseModal {
   lang: string
 
   private readonly options = {
-    dismissable: false
+    dismissible: false
   }
 
   constructor(

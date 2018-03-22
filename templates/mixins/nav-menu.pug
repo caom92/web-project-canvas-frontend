@@ -5,7 +5,7 @@
 //-     HTML del boton que activara el menu lateral
 //-   * [showCondition] (string): expresion Angular que define la condicion que 
 //-     indica cuando se debe renderizar el boton que activa el menu lateral
-mixin navBar(sideNavButtonProperties = null)
+mixin navBar(sideNavButtonProperties = {})
   mz-navbar&attributes(attributes)
     if sideNavButtonProperties
       mz-navbar-item-container('[align]'="'left'")

@@ -59,11 +59,11 @@ export abstract class BackendService {
         BackendService.requestOptions
       )
       .map((response: Response) => {
-        const result = this.parseHttpResponseToJson(response)
-        onSuccessCallback(result)
+        return this.parseHttpResponseToJson(response)
+        // onSuccessCallback(result)
       })
       .catch(onErrorCallback)
-      .subscribe()
+      .subscribe(onSuccessCallback)
   }
 
   write(
@@ -75,11 +75,11 @@ export abstract class BackendService {
     this.http
       .post(this.servicesBaseUrl + service, data, BackendService.requestOptions)
       .map((response: Response) => {
-        const result = this.parseHttpResponseToJson(response)
-        onSuccessCallback(result)
+        return this.parseHttpResponseToJson(response)
+        // onSuccessCallback(result)
       })
       .catch(onErrorCallback)
-      .subscribe()
+      .subscribe(onSuccessCallback)
   }
 
   delete(
@@ -94,15 +94,16 @@ export abstract class BackendService {
         BackendService.requestOptions
       )
       .map((response: Response) => {
-        const result = this.parseHttpResponseToJson(response)
-        onSuccessCallback(result)
+        return this.parseHttpResponseToJson(response)
+        // onSuccessCallback(result)
       })
       .catch(onErrorCallback)
-      .subscribe()
+      .subscribe(onSuccessCallback)
   }
 
   private parseHttpResponseToJson(response: Response): any {
-    const responseBody = response['_body'].toString()
+    const body = '_body'
+    const responseBody = response[body].toString()
     let responseJson = JSON.parse(responseBody)
 
     // revisamos si el backend esta respondiendo con una versión vieja del
