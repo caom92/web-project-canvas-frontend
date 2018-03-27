@@ -1,5 +1,5 @@
-include mixins/general.pug
-include mixins/form.pug
+include ../mixins/general.pug
+include ../mixins/form.pug
 
 div.row 
   div.col.s5
@@ -14,7 +14,7 @@ div.row
 div.row: div.col.s12
   +table('tableHeaders')
     tr('*ngFor'='let test of selectedSuite.unitTests')
-      td: ='{{ test.description }}'
+      td: ='{{ test.serviceName }}: {{ test.description }}'
       td('*ngIf'='test.passed === true') 
         span.green-text='Sí'
       td('*ngIf'='test.passed === false')

@@ -3,24 +3,16 @@ import { MzBaseModal, MzModalService } from 'ng2-materialize'
 import { LocaleService, TranslationService } from 'angular-l10n'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { 
-  BackendServiceImp 
+  BackendResponse, 
+  BackendService, 
+  OnSuccessCallback 
 } from './../../services/backend'
 import { 
-  BackendResponse, 
-  OnSuccessCallback 
-} from './../../web-project-canvas-frontend/services/backend'
-import { 
-  FormErrorsTranslationServiceImp 
-} from '../../services/form-error-translations'
-import { 
-  ProgressModalComponent 
-} from '../../web-project-canvas-frontend/components/modals/please-wait'
-import { 
-  RoundedToastService 
-} from '../../web-project-canvas-frontend/services/toast'
-import { 
-  getServiceMessage
-} from '../../web-project-canvas-frontend/functions/utility'
+  FormErrorsTranslationService 
+} from './../../services/form-error-translation'
+import { ProgressModalComponent } from './please-wait'
+import { RoundedToastService } from './../../services/toast'
+import { getServiceMessage } from './../../functions/utility'
 
 
 export abstract class AddItemAbstractModalComponent 
@@ -35,8 +27,8 @@ export abstract class AddItemAbstractModalComponent
     public locale: LocaleService,
     public textTranslator: TranslationService,
     protected readonly formBuilder: FormBuilder,
-    protected readonly server: BackendServiceImp,
-    protected readonly formErrors: FormErrorsTranslationServiceImp,
+    protected readonly server: BackendService,
+    protected readonly formErrors: FormErrorsTranslationService,
     protected readonly modalManager: MzModalService,
     protected readonly toastManager: RoundedToastService
   ) {

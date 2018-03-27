@@ -1,15 +1,15 @@
 import { Component, ComponentRef, OnChanges, OnInit } from '@angular/core'
 import { MzModalService, MzBaseModal } from 'ng2-materialize'
-import { BackendService } from './../services/backend'
+import { BackendService } from './../../services/backend'
 import { LocaleService, TranslationService } from 'angular-l10n'
-import { ProgressModalComponent } from './../components/modals/please-wait'
+import { ProgressModalComponent } from './../../components/modals/please-wait'
 import { 
   ActionConfirmationModalComponent 
-} from './../components/modals/action-confirmation'
-import { OnSuccessCallback, BackendResponse } from './../services/backend'
-import { RoundedToastService } from './../services/toast'
-import { getServiceMessage } from './../functions/utility'
-import { AddItemAbstractModalComponent } from './add-item'
+} from './../../components/modals/action-confirmation'
+import { OnSuccessCallback, BackendResponse } from './../../services/backend'
+import { RoundedToastService } from './../../services/toast'
+import { getServiceMessage } from './../../functions/utility'
+import { AddItemAbstractModalComponent } from './../modals/add-item'
 
 
 export abstract class ItemsListAbstractComponent

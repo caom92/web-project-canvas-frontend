@@ -48,10 +48,10 @@ mixin dropdownMenu(id, activationButtonId)
 //-   colapsable a crear
 //- * icon (string): expresion Angular que define el nombre del icono MDI a 
 //-   desplegar en el titulo
-mixin sideNavCollapsible(title, icon)
+mixin sideNavCollapsible(title, icon, iconClass='')
   mz-sidenav-collapsible&attributes(attributes)
     mz-sidenav-collapsible-header
-      i(mz-icon-mdi '[icon]'=icon)
+      i(mz-icon-mdi '[icon]'=icon class=iconClass)
       =title
     if block
       mz-sidenav-collapsible-content

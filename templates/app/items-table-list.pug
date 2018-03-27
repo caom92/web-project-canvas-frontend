@@ -1,0 +1,9 @@
+extends ./items-cards-list.pug
+
+block RequiredInfo
+
+block ItemsListing
+  div.row: div.col.s12('*ngIf'='list.length > 0')
+    +responsiveTable('tableHeaders[lang]')
+      tr('*ngFor'='let element of list; let i = index')
+        block ElementData

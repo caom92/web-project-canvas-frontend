@@ -1,12 +1,13 @@
 import { OnInit, ComponentRef, EventEmitter } from '@angular/core'
-import { BackendService, OnSuccessCallback } from './../services/backend'
+import { BackendService, OnSuccessCallback } from './../../services/backend'
 import { MzModalService, MzBaseModal } from 'ng2-materialize'
 import { 
   ProgressModalComponent 
-} from '../../web-project-canvas-frontend/components/modals/please-wait'
+} from '../../../web-project-canvas-frontend/components/modals/please-wait'
 import { 
   BackendResponse 
-} from '../../web-project-canvas-frontend/services/backend'
+} from '../../../web-project-canvas-frontend/services/backend'
+import { parseJsonToFormData } from '../../functions/utility'
 
 
 export abstract class UnitTest {
@@ -17,8 +18,8 @@ export abstract class UnitTest {
   passed: boolean = null
 
   constructor(
+    readonly serviceName: string,
     readonly description: string,
-    protected readonly serviceName: string,
     protected readonly serviceInput: any,
     protected readonly callback: (response: BackendResponse) => boolean
   ) {
@@ -26,8 +27,23 @@ export abstract class UnitTest {
 
   abstract execute(): void
 
-  protected finish(): void {
-    UnitTest.testFinished.emit()
+  protected get onServiceResponse(): OnSuccessCallback {
+    return (response: BackendResponse) => {
+      this.passed = this.callback(response)
+
+      if (!this.passed) {
+        console.error({
+          testDescription: this.description,
+          service: {
+            name: this.serviceName,
+            input: this.serviceInput
+          },
+          response: response
+        })
+      }
+
+      UnitTest.testFinished.emit()
+    }
   }
 }
 
@@ -43,13 +59,10 @@ export class HttpGetUnitTest extends UnitTest {
     super(description, serviceName, serviceInput, callback)
   }
 
+  // override UnitTest
   execute(): void {
     UnitTest.server.read(
-      this.serviceName, this.serviceInput, 
-      (response: BackendResponse) => {
-        this.passed = this.callback(response)
-        this.finish()
-      }
+      this.serviceName, this.serviceInput, this.onServiceResponse
     )
   }
 }
@@ -66,26 +79,12 @@ export class HttpPostUnitTest extends UnitTest {
     super(description, serviceName, serviceInput, callback)
   }
 
+  // override UnitTest
   execute(): void {
     UnitTest.server.write(
-      this.serviceName, this.serviceInputAsFormData, 
-      (response: BackendResponse) => {
-        this.passed = this.callback(response)
-        this.finish()
-      }
+      this.serviceName, parseJsonToFormData(this.serviceInput), 
+      this.onServiceResponse
     )
-  }
-
-  private get serviceInputAsFormData(): FormData {
-    const data = new FormData()
-    for (const field in this.serviceInput) {
-      if (this.serviceInput.hasOwnProperty(field)) {
-        data.append(field.toString(), this.serviceInput[field].toString())
-      } else {
-        throw new Error(`${ field.toString() } is not a member of serviceInput`)
-      }
-    }
-    return data
   }
 }
 
@@ -101,13 +100,10 @@ export class HttpDeleteUnitTest extends UnitTest {
     super(description, serviceName, serviceInput, callback)
   }
 
+  // override UnitTest
   execute(): void {
     UnitTest.server.delete(
-      this.serviceName, this.serviceInput, 
-      (response: BackendResponse) => {
-        this.passed = this.callback(response)
-        this.finish()
-      }
+      this.serviceName, this.serviceInput, this.onServiceResponse
     )
   }
 }

@@ -89,18 +89,6 @@ export function comparePasswordInputs(
     null : { arePasswordsDifferent: true }
 }
 
-
-// TODO: probar esta funcion
-export function parse<CurrentType, FinalType>(
-  data: CurrentType, parseDescriptor: Array<[string, string]>
-): FinalType {
-  let parsedData: FinalType
-  for (const keys of parseDescriptor) {
-    parsedData[keys[0]] = data[keys[1]]
-  }
-  return parsedData
-}
-
 export function parseListElementsType<CurrentType, FinalType>(
   list: Array<CurrentType>, map: (element: CurrentType) => FinalType
 ): Array<FinalType> {
@@ -126,7 +114,9 @@ export function parseJsonToFormData(json: any): FormData {
   const data = new FormData()
   for (const key in json) {
     if (json.hasOwnProperty(key)) {
-      data.append(key.toString(), json[key].toString())
+      if (json[key] !== null && json[key] !== undefined) {
+        data.append(key.toString(), json[key].toString())
+      }
     } else {
       throw new Error(`${ key } is not a member of json`)
     }
