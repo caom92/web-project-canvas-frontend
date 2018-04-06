@@ -1,6 +1,7 @@
 import { Component } from '@angular/core'
 import { LocaleService, TranslationService, Language } from 'angular-l10n'
 import { MzBaseModal } from 'ng2-materialize'
+import { environment } from '../../../environments/environment'
 
 
 @Component({
@@ -12,7 +13,7 @@ export class ProgressModalComponent extends MzBaseModal {
   lang: string
 
   private readonly options = {
-    dismissible: false
+    dismissible: !environment.production
   }
 
   constructor(

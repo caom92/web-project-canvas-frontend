@@ -7,11 +7,13 @@ include ../mixins/nav-menu.pug
 +navBar(sideNavBtnProperties)('[navbarClass]'='globals.navBarColor')
   block NavBarItems
 
-+sideNav()('*ngIf'="globals.isSideNavVisible === true")
++sideNav()(
+  '*ngIf'="globals.isSideNavVisible === true" '[fixed]'="'true'"
+)
   block SideNavItems
 
-div.container()
+div([ngClass]='{ "container": globals.isContentCentered, "with-sidenav": globals.isSideNavVisible }')
   ui-view('[hidden]'='globals.isSpinnerVisible')
-  div.row('[hidden]'='!globals.isSpinnerVisible')
-    div.col.s12.m12.center-align
-      mz-spinner('[size]'="'big'")
+  div.centered('[hidden]'='!globals.isSpinnerVisible'): img.spinner(
+    src='assets/images/koi_spinner.png' width='240' height='240'
+  )

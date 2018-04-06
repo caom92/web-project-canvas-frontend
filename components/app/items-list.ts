@@ -51,6 +51,12 @@ export abstract class ItemsListAbstractComponent
   protected abstract getEditElementModalInput(idx: number, context: any): any
   protected abstract get onElementEditedNotificationReceived(): 
     (context: any) => void
+
+  protected get onTranslationChanged(): () => void {
+    return () => {
+      // no hacer nada es el funcionamiento base
+    }
+  }
   
   protected onAddButtonClicked(): void {
     const modalRef = this.modalManager.open(
@@ -88,10 +94,6 @@ export abstract class ItemsListAbstractComponent
     modal.actionConfirmation.subscribe(
       this.onElementDeletedNotificationReceived
     )
-  }
-
-  protected get onTranslationChanged(): () => void {
-    return () => {}
   }
 
   protected get onElementDeletedNotificationReceived(): (context: { 

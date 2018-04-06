@@ -51,12 +51,12 @@ export abstract class UnitTest {
 export class HttpGetUnitTest extends UnitTest {
 
   constructor(
-    description: string,
     serviceName: string,
+    description: string,
     serviceInput: any,
     callback: (response: BackendResponse) => boolean
   ) {
-    super(description, serviceName, serviceInput, callback)
+    super(serviceName, description, serviceInput, callback)
   }
 
   // override UnitTest
@@ -71,12 +71,12 @@ export class HttpGetUnitTest extends UnitTest {
 export class HttpPostUnitTest extends UnitTest {
 
   constructor(
-    description: string,
     serviceName: string,
+    description: string,
     serviceInput: any,
     callback: (response: BackendResponse) => boolean
   ) {
-    super(description, serviceName, serviceInput, callback)
+    super(serviceName, description, serviceInput, callback)
   }
 
   // override UnitTest
@@ -92,12 +92,12 @@ export class HttpPostUnitTest extends UnitTest {
 export class HttpDeleteUnitTest extends UnitTest {
   
   constructor(
-    description: string,
     serviceName: string,
+    description: string,
     serviceInput: any,
     callback: (response: BackendResponse) => boolean
   ) {
-    super(description, serviceName, serviceInput, callback)
+    super(serviceName, description, serviceInput, callback)
   }
 
   // override UnitTest
@@ -165,6 +165,10 @@ export abstract class BackendUnitTestsComponent implements OnInit {
     }
   }
 
+  private onLogOutButtonClicked(): void {
+    this.server.read('logout', {}, this.onLogOutResponse)
+  }
+
   private get onTestFinished(): () => void {
     return () => {
       this.numPendingTests--
@@ -181,8 +185,8 @@ export abstract class BackendUnitTestsComponent implements OnInit {
     }
   }
 
-  private get onLogInResponse(): OnSuccessCallback {
-    return (response: BackendResponse) => {
+  private readonly onLogInResponse: OnSuccessCallback =
+    (response: BackendResponse) => {
       if (response.returnCode === 0) {
         this.executeTestsOfSelectedSuite()
       } else {
@@ -190,15 +194,13 @@ export abstract class BackendUnitTestsComponent implements OnInit {
         console.error(response.message)
       }
     }
-  }
 
-  private get onLogOutResponse(): OnSuccessCallback {
-    return (response: BackendResponse) => {
+  private readonly onLogOutResponse: OnSuccessCallback =
+    (response: BackendResponse) => {
       if (response.returnCode !== 0) {
         console.error(response.message)
       }
     }
-  }
 
   private executeTestsOfSelectedSuite(): void {
     for (const test of this.selectedSuite.unitTests) {

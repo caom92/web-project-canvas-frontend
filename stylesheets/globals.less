@@ -109,16 +109,34 @@ body {
   overflow: hidden;
 }
 
-// esta regla permite animar una imagen para que esté rotando constantemente 
-// sobre su centro
-.spinner{
-  width: 240px;
-  height: 240px;
-  -webkit-animation: spin 2s linear infinite;
-  -moz-animation:spin 2s linear infinite;
-  animation:spin 2s linear infinite;
+// Estas reglas permiten crear una tabla cuyos encabezados son fijos pero el 
+// contenido puede arrastrarse vertical y horizontalmente
+div.fixed-table-container {  
+  overflow-x: auto;
+  overflow-y: hidden;
+  table.fixed {
+    thead, tbody {
+      display: block;
+    }
+    tbody {
+      overflow-x: hidden;
+      overflow-y: auto;
+      max-height: 50vh;
+    }
+    td.narrow, th.narrow {
+      width: 75px;
+      min-width: 75px;
+      max-width: 75px;
+    }
+    td.medium, th.medium {
+      width: 240px;
+      min-width: 240px;
+      max-width: 240px;
+    }
+    td.wide, th.wide {
+      width: 480px;
+      min-width: 480px;
+      max-width: 480px;
+    }
+  }
 }
-
-@-moz-keyframes spin { 100% { -moz-transform: rotate(-360deg); } }
-@-webkit-keyframes spin { 100% { -webkit-transform: rotate(-360deg); } }
-@keyframes spin { 100% { -webkit-transform: rotate(-360deg); transform:rotate(-360deg); } }

@@ -1,9 +1,12 @@
 export abstract class GlobalMembersService {
-  
+
   private _isSpinnerVisible = true
   private _isSideNavVisible = false
 
-  constructor(private readonly _navBarColor: string = 'koi-orange') {
+  constructor(
+    protected readonly navBarColor: string = 'koi-orange',
+    protected readonly isContentCentered: boolean = true
+  ) {
   }
 
   get isSideNavVisible(): boolean {
@@ -12,10 +15,6 @@ export abstract class GlobalMembersService {
 
   get isSpinnerVisible(): boolean {
     return this._isSpinnerVisible
-  }
-
-  get navBarColor(): string {
-    return this._navBarColor
   }
 
   showSideNav(): void {

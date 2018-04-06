@@ -3,11 +3,10 @@ import { FormGroup } from '@angular/forms'
 import { languageConfig } from './l10n-config'
 
 // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
-export function getTodayFormattedDate(): string {
-  const today = new Date()
-  const year = today.getUTCFullYear().toString()
-  let month = (today.getMonth() + 1).toString()
-  let day = today.getUTCDate().toString()
+export function getFormattedDate(date: Date = new Date()): string {
+  const year = date.getUTCFullYear().toString()
+  let month = (date.getMonth() + 1).toString()
+  let day = date.getUTCDate().toString()
 
   // El mes y el dia no estan precedidos por un 0 cuando son valores menores 
   // a 10. Para corregir esto, le agregamos el 0 al principio y luego 
@@ -59,7 +58,7 @@ export function getDatePickerConfig(lang: string): any {
       'weekdaysLetter': [
         'D', 'L', 'M', 'R', 'J', 'V', 'S'
       ],
-      'today': 'Hoy',
+      'date': 'Hoy',
       'clear': 'Borrar',
       'close': 'Cerrar',
       'format': 'dddd, dd mmmm, yyyy',

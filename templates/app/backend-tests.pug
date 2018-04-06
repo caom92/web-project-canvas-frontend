@@ -2,11 +2,15 @@ include ../mixins/general.pug
 include ../mixins/form.pug
 
 div.row 
-  div.col.s5
+  div.col.s4
     +button('button', 'Lanzar Pruebas')(
       '(click)'='onLaunchButtonClicked()'
     )
-  div.col.s5
+  div.col.s4
+    +button('button', 'Cerrar Sesión')(
+      '(click)'='onLogOutButtonClicked()'
+    )
+  div.col.s4
     +select("'Credenciales de Usuario'", 'testSuites', { name: 'name' })(
       '[(ngModel)]'='selectedSuite'
     )
