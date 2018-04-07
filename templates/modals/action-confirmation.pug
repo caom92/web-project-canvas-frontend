@@ -6,13 +6,15 @@ mz-modal
     ='{{ title | translate:lang }}'
   mz-modal-content('[innerHTML]'='message | translate:lang')
   mz-modal-footer
-    +button('button', '{{ "accept" | translate:lang }}', "'check'")(
+    +button('button', '{{ "continue" | translate:lang }}', '"check"')(
       mz-modal-close
-      'class'='red-text'
+      class='red-text colorless-on-hover'
+      style='background-color: transparent !important'
       '[flat]'='true'
       '(click)'='onActionConfirmed()'
     )
+    span=' '
     +button('button', '{{ "cancel" | translate:lang }}', "'close'")(
-      '[flat]'='true'
       mz-modal-close
+      class='blue'
     )
