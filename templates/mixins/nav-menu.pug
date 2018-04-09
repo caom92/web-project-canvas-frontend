@@ -57,3 +57,21 @@ mixin sideNavCollapsible(title, icon, iconClass='')
     if block
       mz-sidenav-collapsible-content
         block
+
+mixin reportIssueSideNavLink(destinationUrl)
+  mz-sidenav-link
+    +link(destinationUrl)(class='side-menu-link' target='_blank')
+      i(mz-icon-mdi '[icon]'='"alert"')
+      ='{{ "report issue" | translate:lang }}'
+
+mixin koiSideNavLink()
+  mz-sidenav-link
+    +link('https://www.facebook.com/KoiSoftware/')(
+      class='side-menu-link waves-effect waves-green'
+      target='_blank'
+    )
+      img(
+        class='koi-sidenav-link-icon'
+        src='assets/images/koi_spinner.png'
+      )
+      !='{{ "made by koi" | translate:lang }}&reg;'
