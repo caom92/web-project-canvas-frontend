@@ -46,20 +46,27 @@ export abstract class AddItemAbstractModalComponent
   protected abstract getFormGroup(): FormGroup
   protected abstract getServiceInputData(): FormData
   protected abstract get serviceName(): string
+  protected abstract get serviceMessage(): string
   protected abstract getObserverInputData(response: BackendResponse): any
 
   protected onFormSubmit(): void {
     this.progressModal = this.modalManager.open(ProgressModalComponent)
-    this.server.write(
-      this.serviceName, this.getServiceInputData(), this.onServiceResponse
-    )
+    this.requestService()
   }
 
-  private get onServiceResponse(): OnSuccessCallback {
+  protected get requestService(): () => void {
+    return () => {
+      this.server.create(
+        this.serviceName, this.getServiceInputData(), this.onServiceResponse
+      )
+    }
+  }
+
+  protected get onServiceResponse(): OnSuccessCallback {
     return (response: BackendResponse) => {
       this.progressModal.instance.modalComponent.close()
       this.toastManager.show(getServiceMessage(
-        this.textTranslator, this.serviceName, response.returnCode
+        this.textTranslator, this.serviceMessage, response.returnCode
       ))
 
       if (response.returnCode === 0) {

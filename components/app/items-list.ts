@@ -44,6 +44,7 @@ export abstract class ItemsListAbstractComponent
   protected abstract get deleteConfirmationModalTitle(): string
   protected abstract get deleteConfirmationModalMessage(): string
   protected abstract get deleteElementServiceName(): string
+  protected abstract get deleteServiceMessage(): string
   protected abstract get editElementModalComponent(): any
   protected abstract get addElementModalInput(): any
   protected abstract get onElementAddedNotificationReceived(): 
@@ -103,7 +104,7 @@ export abstract class ItemsListAbstractComponent
       this.progressModal = this.modalManager.open(ProgressModalComponent)
       this.elementToDeleteIdx = context.idx
       this.server.delete(
-        this.deleteElementServiceName, { id: context.tableId }, 
+        `${ this.deleteElementServiceName }/${ context.tableId }`, 
         this.onDeleteElementResponse
       )
     }
@@ -113,7 +114,7 @@ export abstract class ItemsListAbstractComponent
     return (response: BackendResponse) => {
       this.progressModal.instance.modalComponent.close()
       this.toastManager.show(getServiceMessage(
-        this.textTranslator, this.deleteElementServiceName, response.returnCode
+        this.textTranslator, this.deleteServiceMessage, response.returnCode
       ))
 
       if (response.returnCode === 0) {

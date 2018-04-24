@@ -1,10 +1,6 @@
 import { Observable } from 'rxjs/Rx'
 import { 
-  Http, 
-  Response, 
-  Headers, 
-  RequestOptions, 
-  URLSearchParams 
+  Http, Response, Headers, RequestOptions, URLSearchParams 
 } from '@angular/http'
 
 
@@ -14,17 +10,17 @@ export interface BackendResponse {
   data: any
 }
 
-export type OnSuccessCallback = (response: BackendResponse) => void
 export type OnErrorCallback = 
   (error: any, caught: Observable<void>) => Array<any>
+
+export type OnSuccessCallback = (response: BackendResponse) => void
+
 
 export abstract class BackendService {
 
   private static readonly requestOptions: RequestOptions = 
     new RequestOptions({
-      headers: new Headers({ 
-        'Accept': 'application/json'
-      }),
+      headers: new Headers({ 'Accept': 'application/json' }),
       withCredentials: true
     })
 
@@ -42,7 +38,6 @@ export abstract class BackendService {
 
   read(
     service: string, 
-    data: any, 
     onSuccessCallback: OnSuccessCallback,
     onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
   ): void {
@@ -54,48 +49,55 @@ export abstract class BackendService {
     // los parametros ingresados y adjuntarlos a la URL del servicio 
     // dividiendolos con diagonales
     this.http
-      .get(
-        this.servicesBaseUrl + service + this.parseJsonToUrlParams(data),
-        BackendService.requestOptions
-      )
+      .get(this.servicesBaseUrl + service, BackendService.requestOptions)
       .map((response: Response) => {
         return this.parseHttpResponseToJson(response)
-        // onSuccessCallback(result)
       })
       .catch(onErrorCallback)
       .subscribe(onSuccessCallback)
   }
 
-  write(
+  create(
     service: string, 
-    data: FormData, 
+    body: FormData, 
     onSuccessCallback: OnSuccessCallback,
     onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
   ): void {
     this.http
-      .post(this.servicesBaseUrl + service, data, BackendService.requestOptions)
+      .post(this.servicesBaseUrl + service, body, BackendService.requestOptions)
       .map((response: Response) => {
         return this.parseHttpResponseToJson(response)
-        // onSuccessCallback(result)
+      })
+      .catch(onErrorCallback)
+      .subscribe(onSuccessCallback)
+  }
+
+  update(
+    service: string,
+    body: FormData,
+    onSuccessCallback: OnSuccessCallback,
+    onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
+  ): void {
+    this.http
+      .patch(
+        this.servicesBaseUrl + service, body, BackendService.requestOptions
+      )
+      .map((response: Response) => {
+        return this.parseHttpResponseToJson(response)
       })
       .catch(onErrorCallback)
       .subscribe(onSuccessCallback)
   }
 
   delete(
-    service: string, 
-    data: any, 
+    service: string,
     onSuccessCallback: OnSuccessCallback,
     onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
   ): void {
     this.http
-      .delete(
-        this.servicesBaseUrl + service + this.parseJsonToUrlParams(data),
-        BackendService.requestOptions
-      )
+      .delete(this.servicesBaseUrl + service, BackendService.requestOptions)
       .map((response: Response) => {
         return this.parseHttpResponseToJson(response)
-        // onSuccessCallback(result)
       })
       .catch(onErrorCallback)
       .subscribe(onSuccessCallback)
@@ -116,17 +118,5 @@ export abstract class BackendService {
       }
     }
     return responseJson
-  }
-
-  private parseJsonToUrlParams(json: any): string {
-    let params = ''
-    for (const i in json) {
-      if (json.hasOwnProperty(i)) {
-        params += '/' + json[i]
-      } else {
-        throw new Error(`${ i.toString() } is not a member of json`)
-      }
-    }
-    return params
   }
 }
