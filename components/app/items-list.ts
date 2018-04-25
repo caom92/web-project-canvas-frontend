@@ -12,12 +12,30 @@ import { getServiceMessage } from './../../functions/utility'
 import { AddItemAbstractModalComponent } from './../modals/add-item'
 
 
+interface TableHeader {
+  isAscending: boolean
+  text: { 
+    es: string, 
+    en: string 
+  }
+  ascendingSort: (a: any, b: any) => number,
+  descendingSort: (a: any, b: any) => number
+}
+
+
 export abstract class ItemsListAbstractComponent
   implements OnChanges, OnInit {
     
   protected elementToDeleteIdx: number
   protected progressModal: ComponentRef<MzBaseModal>
   protected list: Array<any> = []
+
+  private sortingHeader: TableHeader = {
+    isAscending: null,
+    text: { es: null, en: null },
+    ascendingSort: (a, b) => 0,
+    descendingSort: (a, b) => 0
+  }
   
   constructor(
     public locale: LocaleService,
@@ -127,44 +145,12 @@ export abstract class ItemsListAbstractComponent
   protected onSuccessfulElementDeletion(): void {
     // hacer nada es el funcionamiento por defecto
   }
-}
 
-
-export abstract class ChildItemsListAbstractComponent 
-  extends ItemsListAbstractComponent {
-    
-  constructor(
-    locale: LocaleService,
-    textTranslator: TranslationService,
-    server: BackendService,
-    modalManager: MzModalService,
-    toastManager: RoundedToastService
-  ) {
-    super(locale, textTranslator, server, modalManager, toastManager)
-  }
-
-  protected abstract pushItemToListByParentId(parentId: number, item: any): void
-
-  // override ItemsListAbstractComponent
-  protected get onElementAddedNotificationReceived(): (context: {
-    parentId: number,
-    item: any
-  }) => void {
-    return (context) => {
-      this.pushItemToListByParentId(context.parentId, context.item)
-    }
-  }
-
-  // override ItemsListAbstractComponent
-  protected get onElementEditedNotificationReceived(): (context: {
-    idx: number,
-    parentId: number,
-    item: any
-  }) => void {
-    return (context) => {
-      // TODO: insertar en la posicion correcta en el arreglo
-      this.list.splice(context.idx, 1)
-      this.pushItemToListByParentId(context.parentId, context.item)
-    }
+  private sortList(header: TableHeader): void {
+    this.list.sort(
+      (header.isAscending) ? header.descendingSort : header.ascendingSort
+    )
+    header.isAscending = !header.isAscending
+    this.sortingHeader = header
   }
 }

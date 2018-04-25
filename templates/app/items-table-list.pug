@@ -4,6 +4,25 @@ block RequiredInfo
 
 block ItemsListing
   div.row: div.col.s12('*ngIf'='list.length > 0')
-    +responsiveTable('tableHeaders[lang]')
-      tr('*ngFor'='let element of list; let i = index')
-        block ElementData
+    table.highlight.responsive-table 
+      thead
+        th(
+          '*ngFor'='let header of tableHeaders' 
+          '(click)'='sortList(header)'
+        ) 
+          ng-container('*ngIf'='header.text.es === sortingHeader.text.es')
+            ='{{ header.text[lang] }}'
+            i(mz-icon-mdi 
+              '[icon]'="'menu-down'"
+              '*ngIf'='header.isAscending === true'
+            )
+            i(mz-icon-mdi 
+              '[icon]'="'menu-up'"
+              '*ngIf'='header.isAscending === false'
+            )
+          ng-container('*ngIf'='header.text.es !== sortingHeader.text.es')
+            ='{{ header.text[lang] }}'
+      tbody
+        tr('*ngFor'='let element of list; let i = index')
+          block ElementData
+      
