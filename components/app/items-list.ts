@@ -110,7 +110,7 @@ export abstract class ItemsListAbstractComponent
     }
   }
 
-  private get onDeleteElementResponse(): OnSuccessCallback {
+  protected get onDeleteElementResponse(): OnSuccessCallback {
     return (response: BackendResponse) => {
       this.progressModal.instance.modalComponent.close()
       this.toastManager.show(getServiceMessage(
@@ -119,8 +119,13 @@ export abstract class ItemsListAbstractComponent
 
       if (response.returnCode === 0) {
         this.list.splice(this.elementToDeleteIdx, 1)
+        this.onSuccessfulElementDeletion()
       }
     }
+  }
+
+  protected onSuccessfulElementDeletion(): void {
+    // hacer nada es el funcionamiento por defecto
   }
 }
 
