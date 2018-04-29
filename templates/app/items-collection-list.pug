@@ -1,0 +1,32 @@
+include ../mixins/general.pug
+
+block AddButton
+  div.row: div.col.s6.m4
+    +button('button', '{{ "add" | translate:lang }}', "'plus'")(
+      '(click)'='onAddButtonClicked()'
+    )
+
+block RequiredInfo
+
+block ItemsListing
+  div.row: div.col.s12: mz-collection('*ngIf'='list.length > 0')
+    mz-collection-item('*ngFor'='let element of list; let i = index')
+      block ElementData
+      +button('button', '', "'delete'")(mz-secondary-content
+        class='red white-text center-align'
+        '[flat]'="'true'"
+        '[float]'="'true'"
+        '(click)'='onDeleteButtonClicked(i, element)'
+      )
+      +button('button', '', "'pencil'")(mz-secondary-content
+        class='blue white-text center-align'
+        '[flat]'="'true'"
+        '[float]'="'true'"
+        '(click)'='onEditButtonClicked(i, element)'
+      )
+
+ng-container('*ngIf'='list.length == 0')
+  div.row: div.col.s12
+    h5.center-align
+      i.yellow-text(mz-icon-mdi '[icon]'="'alert'")
+      ='{{ emptyListMessage | translate:lang }}'
