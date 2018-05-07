@@ -9,7 +9,11 @@ export const languageConfig: L10nConfig = {
       { code: 'en', dir: 'ltr' }
     ],
     language: 'es',
-    storage: StorageStrategy.Cookie
+    storage: StorageStrategy.Cookie,
+    defaultLocale: {
+      languageCode: 'es',
+      countryCode: 'MX'
+    }
   },
   translation: {
     providers: [
