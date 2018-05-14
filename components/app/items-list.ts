@@ -12,7 +12,7 @@ import { getServiceMessage } from './../../functions/utility'
 import { AddItemAbstractModalComponent } from './../modals/add-item'
 
 
-interface TableHeader {
+export interface TableHeader {
   isAscending: boolean
   text: { 
     es: string, 
