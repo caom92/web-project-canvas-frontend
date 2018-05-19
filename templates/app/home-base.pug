@@ -1,21 +1,25 @@
 include ../mixins/nav-menu.pug
 
-- 
-  var sideNavBtnProperties = {
-    showCondition: "globals.hasSideNav === true"
-  }
-+navBar(sideNavBtnProperties)('[navbarClass]'='globals.navBarColor')
-  block NavBarItems
 
-+sideNav()(
-  '*ngIf'="globals.hasSideNav === true" '[fixed]'="globals.isSideNavFixed"
-)
-  block SideNavItems
+block NavBar
+  - 
+    var sideNavBtnProperties = {
+      showCondition: "globals.hasSideNav === true"
+    }
+  +navBar(sideNavBtnProperties)('[navbarClass]'='globals.navBarColor')
+    block NavBarItems
 
-div(
-  '[ngClass]'='{ "container": globals.isContentCentered, "with-sidenav": globals.makeSpaceForSideNav }'
-)
-  ui-view('[hidden]'='globals.isSpinnerVisible')
-  div.centered('[hidden]'='!globals.isSpinnerVisible'): img.spinner(
-    src='assets/images/koi_spinner.png' width='240' height='240'
+block SideNav
+  +sideNav()(
+    '*ngIf'="globals.hasSideNav === true" '[fixed]'="globals.isSideNavFixed"
   )
+    block SideNavItems
+
+block Body
+  div(
+    '[ngClass]'='{ "container": globals.isContentCentered, "with-sidenav": globals.makeSpaceForSideNav }'
+  )
+    ui-view('[hidden]'='globals.isSpinnerVisible')
+    div.centered('[hidden]'='!globals.isSpinnerVisible'): img.spinner(
+      src='assets/images/koi_spinner.png' width='240' height='240'
+    )
