@@ -2,7 +2,7 @@ include ../mixins/general.pug
 
 
 block AddButton
-  div.row: div.col.s6.m4
+  div.row: div.col.s6.offset-m2
     +button('button', '{{ "add" | translate:lang }}', "'plus'")(
       '(click)'='onAddButtonClicked()'
     )
@@ -10,7 +10,7 @@ block AddButton
 block RequiredInfo
 
 block ItemsListing
-  div.row: div.col.s12: mz-collection('*ngIf'='list.length > 0')
+  div.row: div.col.s12.m8.offset-m2: mz-collection('*ngIf'='list.length > 0')
     mz-collection-item('*ngFor'='let element of list; let i = index')
       block ElementData
       +button('button', '', "'delete'")(mz-secondary-content

@@ -85,9 +85,10 @@ mixin select(label, optionsList, optionsProperties = {})
 
 //- * placeholder (string): el texto a desplegar en el campo de archivo antes 
 //-   de que el usuario haya elegido un archivo
-mixin fileInput(placeholder)
+mixin fileInput(placeholder, icon = '"file"')
   div.file-field.input-field
     div.btn
+      i(mz-icon-mdi '[icon]'=icon)
       span: ='{{ "search" | translate:lang }}'
       input(type='file')&attributes(attributes)
     div.file-path-wrapper
