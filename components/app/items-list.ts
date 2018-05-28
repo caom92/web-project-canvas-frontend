@@ -1,6 +1,7 @@
 import { Component, ComponentRef, OnChanges, OnInit } from '@angular/core'
 import { MzModalService, MzBaseModal } from 'ng2-materialize'
-import { BackendService } from './../../services/backend'
+import { Observable } from 'rxjs/Rx'
+import { BackendService, OnErrorCallback } from './../../services/backend'
 import { LocaleService, TranslationService } from 'angular-l10n'
 import { ProgressModalComponent } from './../../components/modals/please-wait'
 import { 
@@ -153,4 +154,19 @@ export abstract class ItemsListAbstractComponent
     header.isAscending = !header.isAscending
     this.sortingHeader = header
   }
+
+  protected onNetworkErrorCloseModal: OnErrorCallback =
+    (error: any, caught: Observable<void>) => {
+      Observable.throw(error)
+      this.progressModal.instance.modalComponent.close()
+      this.toastManager.show("Network error; try again")
+      return[]
+    }
+  
+  protected onNetworkErrorSendToast: OnErrorCallback =
+    (error: any, caught: Observable<void>) => {
+      Observable.throw(error)
+      this.toastManager.show("Network error; try again")
+      return []
+    }
 }
