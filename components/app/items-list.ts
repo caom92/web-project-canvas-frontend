@@ -77,6 +77,10 @@ export abstract class ItemsListAbstractComponent
       // no hacer nada es el funcionamiento base
     }
   }
+
+  protected onSuccessfulElementDeletion(): void {
+    // hacer nada es el funcionamiento por defecto
+  }
   
   protected onAddButtonClicked(): void {
     const modalRef = this.modalManager.open(
@@ -143,9 +147,20 @@ export abstract class ItemsListAbstractComponent
     }
   }
 
-  protected onSuccessfulElementDeletion(): void {
-    // hacer nada es el funcionamiento por defecto
-  }
+  protected onNetworkErrorCloseModal: OnErrorCallback =
+    (error: any, caught: Observable<void>) => {
+      Observable.throw(error)
+      this.progressModal.instance.modalComponent.close()
+      this.toastManager.show('Network error; try again')
+      return[]
+    }
+  
+  protected onNetworkErrorSendToast: OnErrorCallback =
+    (error: any, caught: Observable<void>) => {
+      Observable.throw(error)
+      this.toastManager.show('Network error; try again')
+      return []
+    }
 
   private sortList(header: TableHeader): void {
     this.list.sort(
@@ -154,19 +169,4 @@ export abstract class ItemsListAbstractComponent
     header.isAscending = !header.isAscending
     this.sortingHeader = header
   }
-
-  protected onNetworkErrorCloseModal: OnErrorCallback =
-    (error: any, caught: Observable<void>) => {
-      Observable.throw(error)
-      this.progressModal.instance.modalComponent.close()
-      this.toastManager.show("Network error; try again")
-      return[]
-    }
-  
-  protected onNetworkErrorSendToast: OnErrorCallback =
-    (error: any, caught: Observable<void>) => {
-      Observable.throw(error)
-      this.toastManager.show("Network error; try again")
-      return []
-    }
 }
