@@ -58,7 +58,7 @@ export function getDatePickerConfig(lang: string): any {
       'weekdaysLetter': [
         'D', 'L', 'M', 'R', 'J', 'V', 'S'
       ],
-      'date': 'Hoy',
+      'today': 'Hoy',
       'clear': 'Borrar',
       'close': 'Cerrar',
       'format': 'dddd, dd mmmm, yyyy',
