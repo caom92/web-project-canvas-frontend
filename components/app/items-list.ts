@@ -151,14 +151,14 @@ export abstract class ItemsListAbstractComponent
     (error: any, caught: Observable<void>) => {
       Observable.throw(error)
       this.progressModal.instance.modalComponent.close()
-      this.toastManager.show('Network error; try again')
-      return[]
+      this.toastManager.show(this.textTranslator.translate('network error'))
+      return []
     }
   
   protected onNetworkErrorSendToast: OnErrorCallback =
     (error: any, caught: Observable<void>) => {
       Observable.throw(error)
-      this.toastManager.show('Network error; try again')
+      this.toastManager.show(this.textTranslator.translate('network error'))
       return []
     }
 
