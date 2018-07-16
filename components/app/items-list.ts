@@ -24,8 +24,7 @@ export interface TableHeader {
 }
 
 
-export abstract class ItemsListAbstractComponent
-  implements OnChanges, OnInit {
+export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
     
   protected elementToDeleteIdx: number
   protected progressModal: ComponentRef<MzBaseModal>
