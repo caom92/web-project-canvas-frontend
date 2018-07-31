@@ -1,5 +1,5 @@
 import { OnInit, ComponentRef, EventEmitter } from '@angular/core'
-import { MzBaseModal, MzModalService } from 'ng2-materialize'
+import { MzBaseModal, MzModalService } from 'ngx-materialize'
 import { LocaleService, TranslationService } from 'angular-l10n'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { 
@@ -64,14 +64,14 @@ export abstract class AddItemAbstractModalComponent
 
   protected get onServiceResponse(): OnSuccessCallback {
     return (response: BackendResponse) => {
-      this.progressModal.instance.modalComponent.close()
+      this.progressModal.instance.modalComponent.closeModal()
       this.toastManager.show(getServiceMessage(
         this.textTranslator, this.serviceMessage, response.returnCode
       ))
 
       if (response.returnCode === 0) {
         this.serviceResponse.emit(this.getObserverInputData(response))
-        this.modalComponent.close()
+        this.modalComponent.closeModal()
       }
     }
   }

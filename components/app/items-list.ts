@@ -1,6 +1,6 @@
-import { Component, ComponentRef, OnChanges, OnInit } from '@angular/core'
-import { MzModalService, MzBaseModal } from 'ng2-materialize'
-import { Observable } from 'rxjs/Rx'
+import { throwError as observableThrowError, of, Observable } from 'rxjs'
+import { ComponentRef, OnChanges, OnInit } from '@angular/core'
+import { MzModalService, MzBaseModal } from 'ngx-materialize'
 import { BackendService, OnErrorCallback } from './../../services/backend'
 import { LocaleService, TranslationService } from 'angular-l10n'
 import { ProgressModalComponent } from './../../components/modals/please-wait'
@@ -134,7 +134,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
 
   protected get onDeleteElementResponse(): OnSuccessCallback {
     return (response: BackendResponse) => {
-      this.progressModal.instance.modalComponent.close()
+      this.progressModal.instance.modalComponent.closeModal()
       this.toastManager.show(getServiceMessage(
         this.textTranslator, this.deleteServiceMessage, response.returnCode
       ))
@@ -147,18 +147,18 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   }
 
   protected onNetworkErrorCloseModal: OnErrorCallback =
-    (error: any, caught: Observable<void>) => {
-      Observable.throw(error)
-      this.progressModal.instance.modalComponent.close()
+    (error: any) => {
+      observableThrowError(error)
+      this.progressModal.instance.modalComponent.closeModal()
       this.toastManager.show(this.textTranslator.translate('network error'))
-      return []
+      return of([])
     }
   
   protected onNetworkErrorSendToast: OnErrorCallback =
-    (error: any, caught: Observable<void>) => {
-      Observable.throw(error)
+    (error: any) => {
+      observableThrowError(error)
       this.toastManager.show(this.textTranslator.translate('network error'))
-      return []
+      return of([])
     }
 
   private sortList(header: TableHeader): void {

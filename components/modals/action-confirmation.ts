@@ -1,6 +1,6 @@
 import { Component, EventEmitter } from '@angular/core'
 import { LocaleService, TranslationService, Language } from 'angular-l10n'
-import { MzBaseModal } from 'ng2-materialize'
+import { MzBaseModal } from 'ngx-materialize'
 
 
 @Component({
