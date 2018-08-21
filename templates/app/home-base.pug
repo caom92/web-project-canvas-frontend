@@ -4,22 +4,22 @@ include ../mixins/nav-menu.pug
 block NavBar
   - 
     var sideNavBtnProperties = {
-      showCondition: "globals.hasSideNav === true"
+      showCondition: "globals.sideNav.exists === true"
     }
   +navBar(sideNavBtnProperties)('[navbarClass]'='globals.navBarColor')
     block NavBarItems
 
 block SideNav
   +sideNav()(
-    '*ngIf'="globals.hasSideNav === true" '[fixed]'="globals.isSideNavFixed"
+    '*ngIf'="globals.sideNav.exists === true" '[fixed]'="globals.sideNav.isFixed"
   )
     block SideNavItems
 
 block Body
   div(
-    '[ngClass]'='{ "container": globals.isContentCentered, "with-sidenav": globals.makeSpaceForSideNav }'
+    '[ngClass]'='{ "container": globals.isContentCentered, "with-sidenav": globals.sideNav.requiresSpace }'
   )
-    ui-view('[hidden]'='globals.isSpinnerVisible')
-    div.centered('[hidden]'='!globals.isSpinnerVisible'): img.spinner(
+    ui-view('[hidden]'='globals.spinner.isVisible')
+    div.centered('[hidden]'='!globals.spinner.isVisible'): img.spinner(
       src='assets/images/spinner.png' width='100' height='100'
     )

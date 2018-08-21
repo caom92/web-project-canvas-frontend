@@ -10,8 +10,73 @@ export interface BackendResponse {
   message: string,
   data: any
 }
-export type OnErrorCallback = (error: any) => Observable<Array<any>>
-export type OnSuccessCallback = (response: BackendResponse) => void
+
+export type OnRequestFailCallback = (error: any) => Observable<Array<any>>
+type OnRequestSuccessCallback = (response: BackendResponse) => void
+export type OnResponseSuccessCallback = (data: any) => void
+export type OnResponseErrorCallback = (code: number, message: string) => void
+type OnResponseCallback = OnRequestSuccessCallback
+
+
+class CallbacksContainer {
+  private _response: OnRequestSuccessCallback
+
+  constructor(
+    onResponseSuccess: OnResponseSuccessCallback,
+    onResponseError: OnResponseErrorCallback,
+    afterResponseEval: OnResponseCallback,
+    readonly fail: OnRequestFailCallback
+  ) {
+    this._response = (response) => {
+      if (response.returnCode === 0) {
+        onResponseSuccess(response.data)
+      } else {
+        onResponseError(response.returnCode, response.message)
+      }
+      afterResponseEval(response)
+    }
+  }
+
+  get response(): OnResponseSuccessCallback {
+    return this._response
+  }
+}
+
+export class BackendRequest {
+  private _on: CallbacksContainer
+
+  constructor(
+    readonly service: string,
+    onResponseSuccess: OnResponseSuccessCallback,
+    onResponseError: OnResponseErrorCallback,
+    afterResponseEval: OnResponseCallback = 
+      BackendRequest.defaultAfterEvalCallback,
+    onRequestFail: OnRequestFailCallback = 
+      BackendRequest.defaultOnFailCallback
+  ) {
+    this._on = new CallbacksContainer(
+      onResponseSuccess,
+      onResponseError,
+      afterResponseEval,
+      onRequestFail
+    )
+  }
+
+  get on(): CallbacksContainer {
+    return this._on
+  }
+
+  private static readonly defaultAfterEvalCallback: OnResponseCallback =
+    (response) => {
+      // No hacer nada es la acción que se realiza por defecto
+    }
+
+  private static readonly defaultOnFailCallback: OnRequestFailCallback = 
+    (error) => {
+      observableThrowError(error)
+      return of([])
+    }
+}
 
 
 export abstract class BackendService {
@@ -28,17 +93,7 @@ export abstract class BackendService {
   ) {
   }
 
-  private static readonly defaultOnErrorCallback: OnErrorCallback = 
-    (error: any) => {
-      observableThrowError(error)
-      return of([])
-    }
-
-  read(
-    service: string, 
-    onSuccessCallback: OnSuccessCallback,
-    onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
-  ): void {
+  read(request: BackendRequest): void {
     // debido a que el metodo GET debe ser enviado con un cuerpo vacio, habra 
     // que pasar los parametros del servicio en el URL, sin embargo, debido a 
     // que el backend esta implementado utilizando Slim PHP, este solo puede 
@@ -53,68 +108,65 @@ export abstract class BackendService {
     //   })
     //   .catch(onErrorCallback)
     //   .subscribe(onSuccessCallback)
-    
     this.http
-      .get(this.servicesBaseUrl + service, BackendService.requestOptions)
+      .get(
+        this.servicesBaseUrl + request.service, 
+        BackendService.requestOptions
+      )
       .pipe(
         map((response: Response) => {
           return this.parseHttpResponseToJson(response)
         }),
-        observableCatchError(onErrorCallback)
+        observableCatchError(request.on.fail)
       )
-      .subscribe(onSuccessCallback)
+      .subscribe(request.on.response)
   }
 
-  create(
-    service: string, 
-    body: FormData, 
-    onSuccessCallback: OnSuccessCallback,
-    onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
-  ): void {
+  create(request: BackendRequest, body: FormData): void {
     this.http
-      .post(this.servicesBaseUrl + service, body, BackendService.requestOptions)
+      .post(
+        this.servicesBaseUrl + request.service, 
+        body, 
+        BackendService.requestOptions
+      )
       .pipe(
         map((response: Response) => {
           return this.parseHttpResponseToJson(response)
         }),
-        observableCatchError(onErrorCallback)
+        observableCatchError(request.on.fail)
       )
-      .subscribe(onSuccessCallback)
+      .subscribe(request.on.response)
   }
 
-  update(
-    service: string,
-    body: FormData,
-    onSuccessCallback: OnSuccessCallback,
-    onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
-  ): void {
+  update(request: BackendRequest, body: FormData): void {
     this.http
       .patch(
-        this.servicesBaseUrl + service, body, BackendService.requestOptions
+        this.servicesBaseUrl + request.service, 
+        body, 
+        BackendService.requestOptions
       )
       .pipe(
         map((response: Response) => {
           return this.parseHttpResponseToJson(response)
         }),
-        observableCatchError(onErrorCallback)
+        observableCatchError(request.on.fail)
       )
-      .subscribe(onSuccessCallback)
+      .subscribe(request.on.response)
   }
 
-  delete(
-    service: string,
-    onSuccessCallback: OnSuccessCallback,
-    onErrorCallback: OnErrorCallback = BackendService.defaultOnErrorCallback
-  ): void {
+  delete(request: BackendRequest): void {
     this.http
-      .delete(this.servicesBaseUrl + service, BackendService.requestOptions)
+      .delete(
+        this.servicesBaseUrl + request.service, 
+        BackendService.requestOptions
+      )
       .pipe(
         map((response: Response) => {
           return this.parseHttpResponseToJson(response)
         }),
-        observableCatchError(onErrorCallback)
+        observableCatchError(request.on.fail)
       )
-      .subscribe(onSuccessCallback)
+      .subscribe(request.on.response)
   }
 
   private parseHttpResponseToJson(response: Response): any {
@@ -131,6 +183,7 @@ export abstract class BackendService {
         data: responseJson.data
       }
     }
+
     return responseJson
   }
 }
