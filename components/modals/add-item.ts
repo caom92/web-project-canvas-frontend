@@ -3,9 +3,7 @@ import { MzBaseModal, MzModalService } from 'ngx-materialize'
 import { LocaleService, TranslationService } from 'angular-l10n'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { 
-  BackendResponse, 
-  BackendService, 
-  OnSuccessCallback 
+  BackendService, OnRequestSuccessCallback
 } from './../../services/backend'
 import { 
   FormErrorsTranslationService 
@@ -47,7 +45,7 @@ export abstract class AddItemAbstractModalComponent
   protected abstract getServiceInputData(): FormData
   protected abstract get serviceName(): string
   protected abstract get serviceMessage(): string
-  protected abstract getObserverInputData(response: BackendResponse): any
+  protected abstract getObserverInputData(data: any): any
 
   protected onFormSubmit(): void {
     this.progressModal = this.modalManager.open(ProgressModalComponent)
@@ -62,17 +60,16 @@ export abstract class AddItemAbstractModalComponent
     }
   }
 
-  protected get onServiceResponse(): OnSuccessCallback {
-    return (response: BackendResponse) => {
+  protected onServiceResponse: OnRequestSuccessCallback =
+    (response) => {
       this.progressModal.instance.modalComponent.closeModal()
       this.toastManager.show(getServiceMessage(
         this.textTranslator, this.serviceMessage, response.returnCode
       ))
 
       if (response.returnCode === 0) {
-        this.serviceResponse.emit(this.getObserverInputData(response))
+        this.serviceResponse.emit(this.getObserverInputData(response.data))
         this.modalComponent.closeModal()
       }
     }
-  }
 }

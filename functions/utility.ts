@@ -2,6 +2,7 @@ import { TranslationService } from 'angular-l10n'
 import { FormGroup } from '@angular/forms'
 import { languageConfig } from './l10n-config'
 
+
 // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
 export function getFormattedDate(date: Date = new Date()): string {
   const year = date.getUTCFullYear().toString()

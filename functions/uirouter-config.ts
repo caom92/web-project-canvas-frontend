@@ -27,8 +27,8 @@ export function checkAuthenticationOnNav(router: UIRouter, injector: Injector) {
       const isComingFromOutside = sourceState.name.length === 0
       const isGoingToLogIn = destinationState.name === 'login'
       const isUserLoggedIn = () =>
-        localStorage.is_logged_in !== undefined
-        && localStorage.is_logged_in !== 'false'
+        localStorage.getItem('is_logged_in') !== undefined
+        && localStorage.getItem('is_logged_in') !== 'false'
 
       if (!isComingFromOutside && !isGoingToLogIn) {
         return (isUserLoggedIn()) ? true : stateService.target('login')
