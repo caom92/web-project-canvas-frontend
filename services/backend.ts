@@ -14,6 +14,52 @@ export interface BackendResponse {
 export type OnRequestFailCallback = (error: any) => Observable<Array<any>>
 export type OnRequestSuccessCallback = (response: BackendResponse) => void
 
+interface ResponseCallbackSchema {
+  beforeEval?: OnRequestSuccessCallback,
+  onSuccess: OnRequestSuccessCallback,
+  onError?: OnRequestSuccessCallback,
+  afterEval?: OnRequestSuccessCallback
+}
+
+
+export function createResponseCallback(
+  options: OnRequestSuccessCallback | ResponseCallbackSchema
+): OnRequestSuccessCallback {
+  const defaultCallback: OnRequestSuccessCallback = (response) => {}
+  const schema = <ResponseCallbackSchema> options
+
+  if (schema.onSuccess) {
+    if (schema.beforeEval === undefined) {
+      schema.beforeEval = defaultCallback
+    }
+
+    if (schema.afterEval === undefined) {
+      schema.afterEval = defaultCallback
+    }
+
+    if (schema.onError === undefined) {
+      schema.onError = defaultCallback
+    }
+    
+    return (response) => {
+      schema.beforeEval(response)
+      if (response.returnCode === 0) {
+        schema.onSuccess(response)
+      } else {
+        schema.onError(response)
+      }
+      schema.afterEval(response)
+    }
+  } else {
+    const action = <OnRequestSuccessCallback> options
+    return (response) => {
+      if (response.returnCode === 0) {
+        action(response)
+      }
+    }
+  }
+}
+
 
 export abstract class BackendService {
 

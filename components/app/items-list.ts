@@ -44,8 +44,8 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
     public locale: LocaleService,
     public textTranslator: TranslationService,
     protected readonly server: BackendService,
-    protected readonly modalManager: MzModalService,
-    protected readonly toastManager: RoundedToastService
+    protected readonly modalService: MzModalService,
+    protected readonly toastService: RoundedToastService
   ) {
   }
 
@@ -85,7 +85,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   }
   
   protected onAddButtonClicked(): void {
-    const modalRef = this.modalManager.open(
+    const modalRef = this.modalService.open(
       this.addElementModalComponent, this.addElementModalInput
     )
 
@@ -95,7 +95,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   }
 
   protected onEditButtonClicked(idx: number, element: any): void {
-    const modalRef = this.modalManager.open(
+    const modalRef = this.modalService.open(
       this.editElementModalComponent, 
       this.getEditElementModalInput(idx, element)
     )
@@ -106,7 +106,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   }
 
   protected onDeleteButtonClicked(idx: number, element: any): void {
-    const modalRef = this.modalManager.open(ActionConfirmationModalComponent, {
+    const modalRef = this.modalService.open(ActionConfirmationModalComponent, {
       title: this.deleteConfirmationModalTitle,
       message: this.deleteConfirmationModalMessage,
       context: { 
@@ -127,7 +127,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   }) => void {
     return (context) => {
       this.progressModal = 
-        this.modalManager.open(ProgressModalComponent).instance.modalComponent
+        this.modalService.open(ProgressModalComponent).instance.modalComponent
       this.elementToDeleteIdx = context.idx
       this.server.delete(
         `${ this.deleteElementServiceName }/${ context.tableId }`, 
@@ -139,7 +139,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   protected onDeleteElementResponse: OnRequestSuccessCallback = 
     (response) => {
       this.progressModal.closeModal()
-      this.toastManager.show(getServiceMessage(
+      this.toastService.show(getServiceMessage(
         this.textTranslator, this.deleteServiceMessage, response.returnCode
       ))
 
@@ -153,14 +153,14 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
     (error) => {
       observableThrowError(error)
       this.progressModal.closeModal()
-      this.toastManager.show(this.textTranslator.translate('network error'))
+      this.toastService.show(this.textTranslator.translate('network error'))
       return of([])
     }
   
   protected onNetworkErrorSendToast: OnRequestFailCallback =
     (error) => {
       observableThrowError(error)
-      this.toastManager.show(this.textTranslator.translate('network error'))
+      this.toastService.show(this.textTranslator.translate('network error'))
       return of([])
     }
 

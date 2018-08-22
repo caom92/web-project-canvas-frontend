@@ -1,5 +1,5 @@
-import { OnInit, ComponentRef, EventEmitter } from '@angular/core'
-import { MzBaseModal, MzModalService } from 'ngx-materialize'
+import { OnInit, EventEmitter } from '@angular/core'
+import { MzBaseModal, MzModalService, MzModalComponent } from 'ngx-materialize'
 import { LocaleService, TranslationService } from 'angular-l10n'
 import { FormBuilder, FormGroup } from '@angular/forms'
 import { 
@@ -19,7 +19,7 @@ export abstract class AddItemAbstractModalComponent
   readonly serviceResponse: EventEmitter<any> = new EventEmitter()
 
   protected form: FormGroup
-  protected progressModal: ComponentRef<MzBaseModal>
+  protected progressModal: MzModalComponent
 
   constructor(
     public locale: LocaleService,
@@ -27,8 +27,8 @@ export abstract class AddItemAbstractModalComponent
     protected readonly formBuilder: FormBuilder,
     protected readonly server: BackendService,
     protected readonly formErrors: FormErrorsTranslationService,
-    protected readonly modalManager: MzModalService,
-    protected readonly toastManager: RoundedToastService
+    protected readonly modalService: MzModalService,
+    protected readonly toastService: RoundedToastService
   ) {
     super()
   }
@@ -48,7 +48,8 @@ export abstract class AddItemAbstractModalComponent
   protected abstract getObserverInputData(data: any): any
 
   protected onFormSubmit(): void {
-    this.progressModal = this.modalManager.open(ProgressModalComponent)
+    this.progressModal = 
+      this.modalService.open(ProgressModalComponent).instance.modalComponent
     this.requestService()
   }
 
@@ -62,13 +63,13 @@ export abstract class AddItemAbstractModalComponent
 
   protected onServiceResponse: OnRequestSuccessCallback =
     (response) => {
-      this.progressModal.instance.modalComponent.closeModal()
-      this.toastManager.show(getServiceMessage(
+      this.progressModal.closeModal()
+      this.toastService.show(getServiceMessage(
         this.textTranslator, this.serviceMessage, response.returnCode
       ))
 
       if (response.returnCode === 0) {
-        this.serviceResponse.emit(this.getObserverInputData(response.data))
+        this.serviceResponse.emit(this.getObserverInputData(response))
         this.modalComponent.closeModal()
       }
     }
