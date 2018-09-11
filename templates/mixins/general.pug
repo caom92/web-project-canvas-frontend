@@ -2,8 +2,8 @@ mixin link(destinationUrl = 'javascript:void(0)')
   a(href=destinationUrl)&attributes(attributes)
     block
 
-mixin uiRouterLink(destinationState)
-  a(uiSref=destinationState)&attributes(attributes)
+mixin routerLink(destinationState)
+  a(routerLink=destinationState)&attributes(attributes)
     block
 
 mixin collapsibleItem(title, icon = null)

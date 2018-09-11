@@ -1,4 +1,4 @@
-import { throwError as observableThrowError, of, Observable } from 'rxjs'
+import { throwError as observableThrowError, of } from 'rxjs'
 import { OnChanges, OnInit } from '@angular/core'
 import { MzModalService, MzModalComponent } from 'ngx-materialize'
 import { 
@@ -81,7 +81,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   }
 
   protected onSuccessfulElementDeletion(): void {
-    // hacer nada es el funcionamiento por defecto
+    // no hacer nada es el funcionamiento por defecto
   }
   
   protected onAddButtonClicked(): void {

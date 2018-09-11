@@ -11,7 +11,8 @@ block NavBar
 
 block SideNav
   +sideNav()(
-    '*ngIf'="globals.sideNav.exists === true" '[fixed]'="globals.sideNav.isFixed"
+    '*ngIf'="globals.sideNav.exists === true" 
+    '[fixed]'="globals.sideNav.isFixed"
   )
     block SideNavItems
 
@@ -19,7 +20,7 @@ block Body
   div(
     '[ngClass]'='{ "container": globals.isContentCentered, "with-sidenav": globals.sideNav.requiresSpace }'
   )
-    ui-view('[hidden]'='globals.spinner.isVisible')
     div.centered('[hidden]'='!globals.spinner.isVisible'): img.spinner(
       src='assets/images/spinner.png' width='100' height='100'
     )
+    router-outlet
