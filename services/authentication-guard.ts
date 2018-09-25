@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core'
 
 
 @Injectable()
-export class AuthenticationNavGuard implements CanActivate {
+export class AuthenticationGuard implements CanActivate {
 
   constructor(private readonly router: Router) {
   }

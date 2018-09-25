@@ -1,8 +1,7 @@
 import { 
   ViewChild, 
   ComponentFactoryResolver, 
-  Type, 
-  ComponentRef 
+  Type 
 } from '@angular/core'
 import { 
   DynamicComponentContainerDirective 

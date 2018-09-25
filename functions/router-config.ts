@@ -1,5 +1,5 @@
 import { ExtraOptions, Route } from '@angular/router'
-import { AuthenticationNavGuard } from '../services/authentication-guard'
+import { AuthenticationGuard } from '../services/authentication-guard'
 
 
 export function getRouterConfig(enableTracing: boolean): ExtraOptions {
@@ -18,6 +18,6 @@ export function getRouteRequiringAuthentication(
     path: path,
     component: component,
     data: { requiresLogIn: true },
-    canActivate: [ AuthenticationNavGuard ]
+    canActivate: [ AuthenticationGuard ]
   }
 }
