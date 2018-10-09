@@ -1,4 +1,5 @@
 class SideNavInfo {
+
   private _exists = false
   private _requiresSpace = false
 
@@ -29,6 +30,7 @@ class SideNavInfo {
 }
 
 class SpinnerInfo {
+  
   private _isVisible = true
 
   constructor() {
@@ -54,8 +56,8 @@ export abstract class GlobalMembersService {
   private _spinner: SpinnerInfo
 
   constructor(
-    protected readonly navBarColor = 'koi-orange',
-    protected readonly isContentCentered = true,
+    readonly navBarColor = 'koi-orange',
+    readonly isContentCentered = true,
     isSideNavFixed = true
   ) {
     this._sideNav = new SideNavInfo(isSideNavFixed)

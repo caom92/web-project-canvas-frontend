@@ -1,5 +1,5 @@
-import { 
-  CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, Router 
+import {
+  CanActivate, RouterStateSnapshot, Router, ActivatedRouteSnapshot
 } from '@angular/router'
 import { Observable } from 'rxjs'
 import { Injectable } from '@angular/core'
@@ -12,12 +12,13 @@ export class AuthenticationGuard implements CanActivate {
   }
 
   canActivate(
-    route: ActivatedRouteSnapshot, 
+    route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean> | boolean {
     const requiresLogIn = route.data.requiresLogIn || false
+    
     if (requiresLogIn) {
-      const isUserLoggedIn = 
+      const isUserLoggedIn =
         localStorage.getItem('is_logged_in') !== undefined
         && localStorage.getItem('is_logged_in') !== 'false'
 

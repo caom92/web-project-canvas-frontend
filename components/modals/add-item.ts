@@ -1,29 +1,29 @@
 import { OnInit, EventEmitter } from '@angular/core'
 import { MzBaseModal, MzModalService, MzModalComponent } from 'ngx-materialize'
-import { LocaleService, TranslationService } from 'angular-l10n'
+import { TranslationService } from 'angular-l10n'
 import { FormBuilder, FormGroup } from '@angular/forms'
-import { 
+import {
   BackendService, OnRequestSuccessCallback
 } from './../../services/backend'
-import { 
-  FormErrorsTranslationService 
+import {
+  FormErrorsTranslationService
 } from './../../services/form-error-translation'
 import { ProgressModalComponent } from './please-wait'
 import { RoundedToastService } from './../../services/toast'
 import { getServiceMessage } from './../../functions/utility'
 
 
-export abstract class AddItemAbstractModalComponent 
+export abstract class AddItemAbstractModalComponent
   extends MzBaseModal implements OnInit {
-  
+
   readonly serviceResponse: EventEmitter<any> = new EventEmitter()
 
-  protected form: FormGroup
   protected progressModal: MzModalComponent
 
+  private _form: FormGroup
+
   constructor(
-    public locale: LocaleService,
-    public textTranslator: TranslationService,
+    readonly textTranslator: TranslationService,
     protected readonly formBuilder: FormBuilder,
     protected readonly server: BackendService,
     protected readonly formErrors: FormErrorsTranslationService,
@@ -33,11 +33,16 @@ export abstract class AddItemAbstractModalComponent
     super()
   }
 
+  get form(): FormGroup {
+    return this._form
+  }
+
   // override OnInit
   ngOnInit(): void {
-    this.textTranslator.translationChanged()
-      .subscribe(this.onTranslationChanged)
-    this.form = this.getFormGroup()
+    this.textTranslator.translationChanged().subscribe(
+      this.onTranslationChanged
+    )
+    this._form = this.getFormGroup()
   }
 
   protected abstract get onTranslationChanged(): () => void
@@ -48,7 +53,7 @@ export abstract class AddItemAbstractModalComponent
   protected abstract getObserverInputData(data: any): any
 
   protected onFormSubmit(): void {
-    this.progressModal = 
+    this.progressModal =
       this.modalService.open(ProgressModalComponent).instance.modalComponent
     this.requestService()
   }
