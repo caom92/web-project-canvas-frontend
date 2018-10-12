@@ -6,8 +6,8 @@ import {
   BackendService, OnRequestSuccessCallback
 } from './../../services/backend'
 import {
-  FormErrorsTranslationService
-} from './../../services/form-error-translation'
+  FormTextsService
+} from '../../services/form-texts'
 import { ProgressModalComponent } from './please-wait'
 import { RoundedToastService } from './../../services/toast'
 import { getServiceMessage } from './../../functions/utility'
@@ -19,22 +19,21 @@ export abstract class AddItemAbstractModalComponent
   readonly serviceResponse: EventEmitter<any> = new EventEmitter()
 
   protected progressModal: MzModalComponent
-
-  private _form: FormGroup
+  protected $form: FormGroup
 
   constructor(
     readonly textTranslator: TranslationService,
     protected readonly formBuilder: FormBuilder,
     protected readonly server: BackendService,
-    protected readonly formErrors: FormErrorsTranslationService,
+    protected readonly formErrors: FormTextsService,
     protected readonly modalService: MzModalService,
     protected readonly toastService: RoundedToastService
   ) {
     super()
   }
 
-  get form(): FormGroup {
-    return this._form
+  get form(): Readonly<FormGroup> {
+    return this.$form
   }
 
   // override OnInit
@@ -42,7 +41,13 @@ export abstract class AddItemAbstractModalComponent
     this.textTranslator.translationChanged().subscribe(
       this.onTranslationChanged
     )
-    this._form = this.getFormGroup()
+    this.$form = this.getFormGroup()
+  }
+
+  onFormSubmit(): void {
+    this.progressModal =
+      this.modalService.open(ProgressModalComponent).instance.modalComponent
+    this.requestService()
   }
 
   protected abstract get onTranslationChanged(): () => void
@@ -51,12 +56,6 @@ export abstract class AddItemAbstractModalComponent
   protected abstract get serviceName(): string
   protected abstract get serviceMessage(): string
   protected abstract getObserverInputData(data: any): any
-
-  protected onFormSubmit(): void {
-    this.progressModal =
-      this.modalService.open(ProgressModalComponent).instance.modalComponent
-    this.requestService()
-  }
 
   protected get requestService(): () => void {
     return () => {

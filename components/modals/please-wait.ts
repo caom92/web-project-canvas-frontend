@@ -1,5 +1,5 @@
 import { Component } from '@angular/core'
-import { LocaleService, TranslationService, Language } from 'angular-l10n'
+import { TranslationService, Language } from 'angular-l10n'
 import { MzBaseModal } from 'ngx-materialize'
 import { environment } from '../../../environments/environment'
 
@@ -8,18 +8,15 @@ import { environment } from '../../../environments/environment'
   templateUrl: '../../templates/modals/please-wait.html'
 })
 export class ProgressModalComponent extends MzBaseModal {
-  
+
   @Language()
   lang: string
 
-  private readonly options = {
+  readonly options = {
     dismissible: !environment.production
   }
 
-  constructor(
-    locale: LocaleService,
-    textTranslator: TranslationService
-  ) {
+  constructor(readonly textTranslator: TranslationService) {
     super()
   }
 }

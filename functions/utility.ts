@@ -11,13 +11,13 @@ export function getFormattedDate(date: Date = new Date()): string {
   let month = (date.getMonth() + 1).toString()
   let day = date.getUTCDate().toString()
 
-  // El mes y el dia no estan precedidos por un 0 cuando son valores menores 
-  // a 10. Para corregir esto, le agregamos el 0 al principio y luego 
-  // recuperamos los ultimos 2 caracteres; si el valor es menor a 10, 
-  // agregarle el 0 hara que la cadena tenga solo 2 caracteres, por lo que la 
-  // funcion slice() retornara la cadena completa, en cambio si el valor es 
-  // mayor a 10, agregarle el 0 hara que la cadena tenga 3 caracteres y la 
-  // funcion slice retornara los ultimos 2 caracteres, borrando el cero que 
+  // El mes y el dia no estan precedidos por un 0 cuando son valores menores
+  // a 10. Para corregir esto, le agregamos el 0 al principio y luego
+  // recuperamos los ultimos 2 caracteres; si el valor es menor a 10,
+  // agregarle el 0 hara que la cadena tenga solo 2 caracteres, por lo que la
+  // funcion slice() retornara la cadena completa, en cambio si el valor es
+  // mayor a 10, agregarle el 0 hara que la cadena tenga 3 caracteres y la
+  // funcion slice retornara los ultimos 2 caracteres, borrando el cero que
   // le habiamos agregado
   month = ('0' + month).slice(-2)
   day = ('0' + day).slice(-2)
@@ -28,7 +28,7 @@ export function getFormattedDate(date: Date = new Date()): string {
 export function getServiceMessage(
   textTranslator: TranslationService, translationKey: string, code: number
 ): string {
-  let message = 
+  let message =
     textTranslator.translate(`${ translationKey } response ${ code }`)
   if (message === languageConfig.translation.missingValue) {
     message = textTranslator.translate(`server response ${ code }`)
@@ -52,7 +52,7 @@ export function getOnResponseShowToast(
 }
 
 export function getDatePickerConfig(lang: string): any {
-  return (lang === 'es') ? 
+  return (lang === 'es') ?
     {
       'closeOnSelect': true,
       'closeOnClear': false,
@@ -95,12 +95,12 @@ export function getDatePickerConfig(lang: string): any {
 export function comparePasswordInputs(
   group: FormGroup, entryField: string, confirmationField: string
 ): any {
-  const password = group.controls[entryField].value 
+  const password = group.controls[entryField].value
   const passwordConfirmation = group.controls[confirmationField].value
-  
-  // hay que retornar una bandera de error que activara el 
+
+  // hay que retornar una bandera de error que activara el
   // mensaje de error a desplegar
-  return (password === passwordConfirmation) ? 
+  return (password === passwordConfirmation) ?
     null : { arePasswordsDifferent: true }
 }
 
@@ -115,7 +115,7 @@ export function parseListElementsType<CurrentType, FinalType>(
 }
 
 export function searchArrayElement<ElementType>(
-  list: Array<ElementType>, filter: (element: ElementType) => boolean
+  list: ReadonlyArray<ElementType>, filter: (element: ElementType) => boolean
 ): ElementType {
   for (const element of list) {
     if (filter(element)) {

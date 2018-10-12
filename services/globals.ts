@@ -1,74 +1,75 @@
-class SideNavInfo {
+class SideNav {
 
-  private _exists = false
-  private _requiresSpace = false
+  private $exists = false
+  private $requiresSpace = false
 
   constructor(readonly isFixed: boolean) {
   }
 
   get exists(): boolean {
-    return this._exists
+    return this.$exists
   }
 
   get requiresSpace(): boolean {
-    return this._requiresSpace
+    return this.$requiresSpace
   }
 
   show(): void {
-    this._exists = true
+    this.$exists = true
     if (this.isFixed) {
-      this._requiresSpace = true
+      this.$requiresSpace = true
     }
   }
 
   hide(): void {
-    this._exists = false
+    this.$exists = false
     if (this.isFixed) {
-      this._requiresSpace = false
+      this.$requiresSpace = false
     }
   }
 }
 
-class SpinnerInfo {
-  
-  private _isVisible = true
+
+class Spinner {
+
+  private $isVisible = true
 
   constructor() {
   }
 
   get isVisible(): boolean {
-    return this._isVisible
+    return this.$isVisible
   }
 
   show(): void {
-    this._isVisible = true
+    this.$isVisible = true
   }
 
   hide(): void {
-    this._isVisible = false
+    this.$isVisible = false
   }
 }
 
 
 export abstract class GlobalMembersService {
 
-  private _sideNav: SideNavInfo
-  private _spinner: SpinnerInfo
+  private $sideNav: SideNav
+  private $spinner: Spinner
 
   constructor(
     readonly navBarColor = 'koi-orange',
     readonly isContentCentered = true,
     isSideNavFixed = true
   ) {
-    this._sideNav = new SideNavInfo(isSideNavFixed)
-    this._spinner = new SpinnerInfo()
+    this.$sideNav = new SideNav(isSideNavFixed)
+    this.$spinner = new Spinner()
   }
 
-  get sideNav(): SideNavInfo {
-    return this._sideNav
+  get sideNav(): Readonly<SideNav> {
+    return this.$sideNav
   }
 
-  get spinner(): SpinnerInfo {
-    return this._spinner
+  get spinner(): Readonly<Spinner> {
+    return this.$spinner
   }
 }

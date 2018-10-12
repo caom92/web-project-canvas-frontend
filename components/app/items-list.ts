@@ -1,5 +1,5 @@
 import { throwError as observableThrowError, of } from 'rxjs'
-import { OnChanges, OnInit } from '@angular/core'
+import { OnInit } from '@angular/core'
 import { MzModalService, MzModalComponent } from 'ngx-materialize'
 import {
   BackendService,
@@ -26,14 +26,23 @@ export interface TableHeader {
   descendingSort: (a: any, b: any) => number
 }
 
+export interface ReadonlyTableHeader {
+  readonly isAscending: boolean
+  readonly text: {
+    readonly es: string,
+    readonly en: string
+  }
+  readonly ascendingSort: (a: any, b: any) => number,
+  readonly descendingSort: (a: any, b: any) => number
+}
 
-export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
+export abstract class ItemsListAbstractComponent implements OnInit {
 
   protected elementToDeleteIdx: number
   protected progressModal: MzModalComponent
-  protected _list: Array<any> = []
+  protected $list: Array<any> = []
 
-  private _sortingHeader: TableHeader = {
+  private $sortingHeader: TableHeader = {
     isAscending: null,
     text: { es: null, en: null },
     ascendingSort: (a, b) => 0,
@@ -41,39 +50,30 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   }
 
   constructor(
-    public textTranslator: TranslationService,
+    readonly textTranslator: TranslationService,
     protected readonly server: BackendService,
     protected readonly modalService: MzModalService,
     protected readonly toastService: RoundedToastService
   ) {
   }
 
+  get sortingHeader(): ReadonlyTableHeader {
+    return this.$sortingHeader
+  }
+
   // override OnInit
   ngOnInit(): void {
-    this.textTranslator.translationChanged()
-      .subscribe(this.onTranslationChanged)
-  }
-
-  // override OnChanges
-  ngOnChanges(): void {
-    // no hacer nada es el funcionamiento base
-  }
-
-  get list(): Array<any> {
-    // return JSON.parse(JSON.stringify(this._list))
-    return this._list
-  }
-
-  get sortingHeader(): TableHeader {
-    return JSON.parse(JSON.stringify(this._sortingHeader))
+    this.textTranslator.translationChanged().subscribe(
+      this.onTranslationChanged
+    )
   }
 
   sortList(header: TableHeader): void {
-    this._list.sort(
+    this.$list.sort(
       (header.isAscending) ? header.descendingSort : header.ascendingSort
     )
     header.isAscending = !header.isAscending
-    this._sortingHeader = header
+    this.$sortingHeader = header
   }
 
   onAddButtonClicked(): void {
@@ -85,17 +85,20 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   }
 
   onDeleteButtonClicked(idx: number, element: any): void {
-    const modalRef = this.modalService.open(ActionConfirmationModalComponent, {
-      title: this.deleteConfirmationModalTitle,
-      message: this.deleteConfirmationModalMessage,
-      context: {
-        tableId: element.id,
-        idx: idx
+    const modalRef = this.modalService.open(
+      ActionConfirmationModalComponent,
+      {
+        title: this.deleteConfirmationModalTitle,
+        message: this.deleteConfirmationModalMessage,
+        context: {
+          id: element.id,
+          idx: idx
+        }
       }
-    })
+    )
     const modal = <ActionConfirmationModalComponent> modalRef.instance
     modal.actionConfirmation.subscribe(
-      this.onElementDeletedNotificationReceived
+      this.onElementDeletionConfirmationReceived
     )
   }
 
@@ -108,6 +111,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
     modal.serviceResponse.subscribe(this.onElementEditedNotificationReceived)
   }
 
+  abstract get list(): ReadonlyArray<any>
   protected abstract get emptyListMessage(): string
   protected abstract get addElementModalComponent(): any
   protected abstract get deleteConfirmationModalTitle(): string
@@ -118,9 +122,9 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
   protected abstract get addElementModalInput(): any
   protected abstract get onElementAddedNotificationReceived():
     (context: any) => void
-  protected abstract getEditElementModalInput(idx: number, context: any): any
   protected abstract get onElementEditedNotificationReceived():
     (context: any) => void
+  protected abstract getEditElementModalInput(idx: number, context: any): any
 
   protected get onTranslationChanged(): () => void {
     return () => {
@@ -128,22 +132,22 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
     }
   }
 
-  protected onSuccessfulElementDeletion(): void {
-    // no hacer nada es el funcionamiento por defecto
-  }
-
-  protected get onElementDeletedNotificationReceived(): (context: {
-    idx: number, tableId: number
+  protected get onElementDeletionConfirmationReceived(): (context: {
+    idx: number, id: number
   }) => void {
     return (context) => {
       this.progressModal =
         this.modalService.open(ProgressModalComponent).instance.modalComponent
       this.elementToDeleteIdx = context.idx
       this.server.delete(
-        `${ this.deleteElementServiceName }/${ context.tableId }`,
+        `${ this.deleteElementServiceName }/${ context.id }`,
         this.onDeleteElementResponse
       )
     }
+  }
+
+  protected onSuccessfulElementDeletion(): void {
+    // no hacer nada es el funcionamiento por defecto
   }
 
   protected onDeleteElementResponse: OnRequestSuccessCallback =
@@ -153,7 +157,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
         this.textTranslator, this.deleteServiceMessage, response.returnCode
       ))
       if (response.returnCode === 0) {
-        this._list.splice(this.elementToDeleteIdx, 1)
+        this.$list.splice(this.elementToDeleteIdx, 1)
         this.onSuccessfulElementDeletion()
       }
     }
@@ -166,7 +170,7 @@ export abstract class ItemsListAbstractComponent implements OnChanges, OnInit {
       return of([])
     }
 
-  protected onNetworkErrorSendToast: OnRequestFailCallback =
+  protected onNetworkErrorShowToast: OnRequestFailCallback =
     (error) => {
       observableThrowError(error)
       this.toastService.show(this.textTranslator.translate('network error'))
