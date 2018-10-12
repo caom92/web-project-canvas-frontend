@@ -34,9 +34,6 @@ class Spinner {
 
   private $isVisible = true
 
-  constructor() {
-  }
-
   get isVisible(): boolean {
     return this.$isVisible
   }
