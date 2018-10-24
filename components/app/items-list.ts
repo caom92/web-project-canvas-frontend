@@ -40,9 +40,9 @@ export abstract class ItemsListAbstractComponent implements OnInit {
 
   protected elementToDeleteIdx: number
   protected progressModal: MzModalComponent
-  protected $list: Array<any> = []
+  protected _list: Array<any> = []
 
-  private $sortingHeader: TableHeader = {
+  private _sortingHeader: TableHeader = {
     isAscending: null,
     text: { es: null, en: null },
     ascendingSort: (a, b) => 0,
@@ -58,7 +58,7 @@ export abstract class ItemsListAbstractComponent implements OnInit {
   }
 
   get sortingHeader(): ReadonlyTableHeader {
-    return this.$sortingHeader
+    return this._sortingHeader
   }
 
   // override OnInit
@@ -69,11 +69,11 @@ export abstract class ItemsListAbstractComponent implements OnInit {
   }
 
   sortList(header: TableHeader): void {
-    this.$list.sort(
+    this._list.sort(
       (header.isAscending) ? header.descendingSort : header.ascendingSort
     )
     header.isAscending = !header.isAscending
-    this.$sortingHeader = header
+    this._sortingHeader = header
   }
 
   onAddButtonClicked(): void {
@@ -157,7 +157,7 @@ export abstract class ItemsListAbstractComponent implements OnInit {
         this.textTranslator, this.deleteServiceMessage, response.returnCode
       ))
       if (response.returnCode === 0) {
-        this.$list.splice(this.elementToDeleteIdx, 1)
+        this._list.splice(this.elementToDeleteIdx, 1)
         this.onSuccessfulElementDeletion()
       }
     }

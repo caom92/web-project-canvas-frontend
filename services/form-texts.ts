@@ -1,6 +1,19 @@
+export interface RequiredOnly {
+  readonly required: string
+}
+
+export interface RequiredWithMinLength extends RequiredOnly {
+  readonly minlength: string
+}
+
+export interface RequiredWithMaxLength extends RequiredOnly {
+  readonly maxlength: string
+}
+
+
 export abstract class FormTextsService {
 
-  protected $translatedTexts: any
+  protected _translatedTexts: any
 
   constructor(
     private readonly translations: {
@@ -9,12 +22,12 @@ export abstract class FormTextsService {
     },
     translatedTexts: any
   ) {
-    this.$translatedTexts = translatedTexts
+    this._translatedTexts = translatedTexts
   }
 
   abstract get texts(): any
 
   translate(lang: string): void {
-    this.$translatedTexts = this.translations[lang]
+    this._translatedTexts = this.translations[lang]
   }
 }
