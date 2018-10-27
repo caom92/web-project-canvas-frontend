@@ -15,19 +15,19 @@ mixin collapsibleItem(title, icon = null)
     mz-collapsible-item-body
       block
 
-//- * type (string): es una cadena que contiene el valor para el atributo HTML 
+//- * type (string): es una cadena que contiene el valor para el atributo HTML
 //-   type del boton a crear
 mixin button(type, label, icon = null)
   button(mz-button type=type)&attributes(attributes)=label
     if icon
       i(mz-icon-mdi '[icon]'=icon '[align]'="'left'")
 
-//- * headers (string): expresion Angular que define el nombre del atributo del 
+//- * headers (string): expresion Angular que define el nombre del atributo del
 //-   componente Angular que contiene el arreglo de encabezados de la tabla
 mixin responsiveTable(headers)
   table.highlight.responsive-table&attributes(attributes)
     thead
-      th('*ngFor'='let header of ' + headers) 
+      th('*ngFor'='let header of ' + headers)
         ='{{ header }}'
     tbody
       block
@@ -35,12 +35,12 @@ mixin responsiveTable(headers)
 mixin table(headers)
   table.highlight&attributes(attributes)
     thead
-      th('*ngFor'='let header of ' + headers) 
+      th('*ngFor'='let header of ' + headers)
         ='{{ header }}'
     tbody
       block
 
-//- * path (string): expresion Angular que contiene el URL al archivo a 
+//- * path (string): expresion Angular que contiene el URL al archivo a
 //-   desplegar con ViewerJS: http://viewerjs.org/instructions/
 mixin viewerJsDoc(path)
   iframe(allowfullscreen webkitallowfullscreen
@@ -53,3 +53,4 @@ mixin pageTitle(icon, title)
   div.row: div.col.s12: h4
     i(mz-icon-mdi '[icon]'=icon)
     =title
+    
