@@ -26,20 +26,24 @@ interface ResponseCallbackSchema {
 export function createResponseCallback(
   options: OnRequestSuccessCallback | ResponseCallbackSchema
 ): OnRequestSuccessCallback {
-  const defaultCallback: OnRequestSuccessCallback = (response) => {}
+  if (options === undefined || options === null) {
+    return null
+  }
+
+  const noop: OnRequestSuccessCallback = (response) => {}
   const schema = <ResponseCallbackSchema> options
 
   if (schema.onSuccess) {
-    if (schema.beforeEval === undefined) {
-      schema.beforeEval = defaultCallback
+    if (schema.beforeEval === undefined || schema.beforeEval === null) {
+      schema.beforeEval = noop
     }
 
-    if (schema.afterEval === undefined) {
-      schema.afterEval = defaultCallback
+    if (schema.afterEval === undefined || schema.afterEval === null) {
+      schema.afterEval = noop
     }
 
-    if (schema.onError === undefined) {
-      schema.onError = defaultCallback
+    if (schema.onError === undefined || schema.onError === null) {
+      schema.onError = noop
     }
 
     return (response) => {

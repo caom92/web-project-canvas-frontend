@@ -14,11 +14,12 @@ export abstract class FormAbstractComponent implements OnInit {
   private formGroup: FormGroup
 
   constructor(
-    protected readonly formBuilder: FormBuilder,
+    formBuilder: FormBuilder,
     protected readonly textTranslator: TranslationService,
     protected readonly formTexts: FormTextsService,
     protected readonly errorsKey: string
   ) {
+    this.buildFormGroup(formBuilder)
   }
 
   get form(): FormGroup {
@@ -26,9 +27,6 @@ export abstract class FormAbstractComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.formGroup = this.formBuilder.group(
-      this.getControlsConfig(), this.groupConfig
-    )
     this.textTranslator.translationChanged().subscribe(
       this.onTranslationChanged
     )
@@ -46,5 +44,11 @@ export abstract class FormAbstractComponent implements OnInit {
 
   protected get groupConfig(): any {
     return {}
+  }
+
+  private buildFormGroup(formBuilder: FormBuilder): void {
+    this.formGroup = formBuilder.group(
+      this.getControlsConfig(), this.groupConfig
+    )
   }
 }
