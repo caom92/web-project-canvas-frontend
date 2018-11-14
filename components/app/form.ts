@@ -7,7 +7,7 @@ import { EventEmitter, OnInit, Output } from '@angular/core'
 export abstract class FormAbstractComponent implements OnInit {
 
   @Output()
-  readonly submission: EventEmitter<any> = new EventEmitter()
+  readonly submission: EventEmitter<any> = new EventEmitter
 
   protected _labels: any
 
@@ -42,7 +42,7 @@ export abstract class FormAbstractComponent implements OnInit {
   abstract get errors(): any
   protected abstract get onTranslationChanged(): () => void
   protected abstract getControlsConfig(): any
-  protected abstract getServiceInputFromForm(): FormData
+  protected abstract getServiceInputFromForm(): any
 
   protected get groupConfig(): any {
     return {}
