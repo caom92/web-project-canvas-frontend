@@ -11,7 +11,7 @@ export abstract class FormAbstractComponent implements OnInit {
 
   protected _labels: any
 
-  private formGroup: FormGroup
+  private formGroup: FormGroup = null
 
   constructor(
     protected readonly formBuilder: FormBuilder,
