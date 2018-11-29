@@ -10,5 +10,5 @@ Servicios base y otro tipo de código utilitario para crear el _frontend_ de un 
 
 - [Angular][angularHomePageUrl] 
 - [angular-l10n][angularLocalizationHomePageUrl]
-- [ngx-materialize][pugMaterializeHomePageUrl] 
+- [ngx-materialize][ngxMaterializeHomePageUrl] 
 - [Pug][pugHomePageUrl]
