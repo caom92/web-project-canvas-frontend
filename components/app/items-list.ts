@@ -16,6 +16,7 @@ import { getServiceMessage } from './../../functions/utility'
 import { AddItemAbstractModalComponent } from './../modals/add-item'
 
 
+
 export interface TableHeader {
   isAscending: boolean
   text: {
@@ -26,6 +27,8 @@ export interface TableHeader {
   descendingSort: (a: any, b: any) => number
 }
 
+
+
 export interface ReadonlyTableHeader {
   readonly isAscending: boolean
   readonly text: {
@@ -35,6 +38,8 @@ export interface ReadonlyTableHeader {
   readonly ascendingSort: (a: any, b: any) => number,
   readonly descendingSort: (a: any, b: any) => number
 }
+
+
 
 export abstract class ItemsListAbstractComponent implements OnInit {
 
