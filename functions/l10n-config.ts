@@ -1,6 +1,8 @@
-import { 
-  L10nConfig, StorageStrategy, ProviderType 
+import {
+  L10nConfig, StorageStrategy, ProviderType
 } from 'angular-l10n'
+
+
 
 export const languageConfig: L10nConfig = {
   locale: {
