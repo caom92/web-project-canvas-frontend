@@ -4,6 +4,8 @@ import { FormTextsService } from '../../services/form-texts'
 import { EventEmitter, OnInit, Output } from '@angular/core'
 
 
+
+
 export abstract class FormAbstractComponent implements OnInit {
 
   @Output()
@@ -21,7 +23,7 @@ export abstract class FormAbstractComponent implements OnInit {
   ) {
   }
 
-  get form(): FormGroup {
+  getForm(): FormGroup {
     return this.formGroup
   }
 
@@ -38,8 +40,8 @@ export abstract class FormAbstractComponent implements OnInit {
     this.submission.emit(this.getServiceInputFromForm())
   }
 
-  abstract get labels(): any
-  abstract get errors(): any
+  abstract getLabels(): any
+  abstract getErrors(): any
   protected abstract get onTranslationChanged(): () => void
   protected abstract getControlsConfig(): any
   protected abstract getServiceInputFromForm(): any

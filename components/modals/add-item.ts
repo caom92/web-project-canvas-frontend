@@ -10,6 +10,8 @@ import { getServiceMessage } from './../../functions/utility'
 import { FormAbstractComponent } from '../app/form'
 
 
+
+
 export abstract class AddItemAbstractModalComponent
   extends MzBaseModal implements OnInit {
 
@@ -24,7 +26,7 @@ export abstract class AddItemAbstractModalComponent
       beforeEval: (response) => {
         this.progressModal.closeModal()
         this.toastService.show(getServiceMessage(
-          this.textTranslator, this.serviceMessage, response.returnCode
+          this.textTranslator, this.getServiceMessage(), response.returnCode
         ))
       },
       onSuccess: (response) => {
@@ -50,7 +52,8 @@ export abstract class AddItemAbstractModalComponent
   }
 
   isFormValid(): boolean {
-    return (this.formComponent.form) ? this.formComponent.form.valid : false
+    const form = this.formComponent.getForm()
+    return (form) ? form.valid : false
   }
 
   onFormSubmit(serviceInput: FormData): void {
@@ -59,8 +62,8 @@ export abstract class AddItemAbstractModalComponent
     this.requestService(serviceInput)
   }
 
-  protected abstract get serviceName(): string
-  protected abstract get serviceMessage(): string
+  protected abstract getServiceName(): string
+  protected abstract getServiceMessage(): string
   protected abstract getObserverInputData(data: any): any
 
   protected get onTranslationChanged(): () => void {
@@ -70,6 +73,8 @@ export abstract class AddItemAbstractModalComponent
   }
 
   protected requestService(serviceInput: FormData): void {
-    this.server.create(this.serviceName, serviceInput, this.onServiceResponse)
+    this.server.create(
+      this.getServiceName(), serviceInput, this.onServiceResponse
+    )
   }
 }
