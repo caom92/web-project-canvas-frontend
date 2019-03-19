@@ -1,8 +1,6 @@
-import { TranslationService } from 'angular-l10n'
 import { FormGroup } from '@angular/forms'
-import { languageConfig } from './l10n-config'
-import { RoundedToastService } from '../services/toast'
-import { OnRequestSuccessCallback } from '../services/backend'
+
+
 
 
 // Retorna la fecha de hoy en una cadena con formato AAAA-MM-DD
@@ -25,31 +23,7 @@ export function getFormattedDate(date: Date = new Date()): string {
   return `${ year }-${ month }-${ day }`
 }
 
-export function getServiceMessage(
-  textTranslator: TranslationService, translationKey: string, code: number
-): string {
-  let message =
-    textTranslator.translate(`${ translationKey } response ${ code }`)
-  if (message === languageConfig.translation.missingValue) {
-    message = textTranslator.translate(`server response ${ code }`)
-    if (message === languageConfig.translation.missingValue) {
-      message = textTranslator.translate(`unknown server error`)
-    }
-  }
-  return message
-}
 
-export function getOnResponseShowToast(
-  translationKey: string,
-  toastService: RoundedToastService,
-  textTranslator: TranslationService
-): OnRequestSuccessCallback {
-  return (response) => {
-    toastService.show(getServiceMessage(
-      textTranslator, translationKey, response.returnCode
-    ))
-  }
-}
 
 export function getDatePickerConfig(lang: string): any {
   return (lang === 'es') ?
@@ -92,6 +66,8 @@ export function getDatePickerConfig(lang: string): any {
     }
 }
 
+
+
 export function comparePasswordInputs(
   group: FormGroup, entryField: string, confirmationField: string
 ): any {
@@ -104,6 +80,8 @@ export function comparePasswordInputs(
     null : { arePasswordsDifferent: true }
 }
 
+
+
 export function parseListElementsType<CurrentType, FinalType>(
   list: Array<CurrentType>, map: (element: CurrentType) => FinalType
 ): Array<FinalType> {
@@ -113,6 +91,8 @@ export function parseListElementsType<CurrentType, FinalType>(
   }
   return parsedData
 }
+
+
 
 export function searchArrayElement<ElementType>(
   list: ReadonlyArray<ElementType>, filter: (element: ElementType) => boolean
@@ -124,6 +104,8 @@ export function searchArrayElement<ElementType>(
   }
   return null
 }
+
+
 
 export function parseJsonToFormData(json: any): FormData {
   const data = new FormData()

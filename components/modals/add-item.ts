@@ -2,11 +2,11 @@ import { OnInit, EventEmitter, ViewChild } from '@angular/core'
 import { MzBaseModal, MzModalService, MzModalComponent } from 'ngx-materialize'
 import { TranslationService } from 'angular-l10n'
 import {
-  BackendService, OnRequestSuccessCallback, createResponseCallback
+  BackendService, OnRequestSuccessCallback
 } from './../../services/backend'
 import { ProgressModalComponent } from './please-wait'
 import { RoundedToastService } from './../../services/toast'
-import { getServiceMessage } from './../../functions/utility'
+import { getServiceMessage, createRequestResponseCallback } from './../../utilities/backend-requests'
 import { FormAbstractComponent } from '../app/form'
 
 
@@ -22,7 +22,7 @@ export abstract class AddItemAbstractModalComponent
 
   protected progressModal: MzModalComponent
   protected onServiceResponse: OnRequestSuccessCallback =
-    createResponseCallback({
+    createRequestResponseCallback({
       beforeEval: (response) => {
         this.progressModal.closeModal()
         this.toastService.show(getServiceMessage(

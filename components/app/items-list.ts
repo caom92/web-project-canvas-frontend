@@ -3,7 +3,7 @@ import { OnInit } from '@angular/core'
 import { MzModalService, MzModalComponent } from 'ngx-materialize'
 import {
   BackendService,
-  OnRequestFailCallback,
+  OnRequestFailureCallback,
   OnRequestSuccessCallback
 } from './../../services/backend'
 import { TranslationService } from 'angular-l10n'
@@ -12,8 +12,9 @@ import {
   ActionConfirmationModalComponent
 } from './../../components/modals/action-confirmation'
 import { RoundedToastService } from './../../services/toast'
-import { getServiceMessage } from './../../functions/utility'
+import { getServiceMessage } from './../../utilities/backend-requests'
 import { AddItemAbstractModalComponent } from './../modals/add-item'
+
 
 
 
@@ -167,7 +168,7 @@ export abstract class ItemsListAbstractComponent implements OnInit {
       }
     }
 
-  protected onNetworkErrorCloseModal: OnRequestFailCallback =
+  protected onNetworkErrorCloseModal: OnRequestFailureCallback =
     (error) => {
       observableThrowError(error)
       this.progressModal.closeModal()
@@ -175,7 +176,7 @@ export abstract class ItemsListAbstractComponent implements OnInit {
       return of([])
     }
 
-  protected onNetworkErrorShowToast: OnRequestFailCallback =
+  protected onNetworkErrorShowToast: OnRequestFailureCallback =
     (error) => {
       observableThrowError(error)
       this.toastService.show(this.textTranslator.translate('network error'))
