@@ -25,7 +25,7 @@ export abstract class FormTextsService {
     this._translatedTexts = translatedTexts
   }
 
-  abstract get texts(): any
+  abstract getTexts(): any
 
   translate(lang: string): void {
     this._translatedTexts = this.translations[lang]
