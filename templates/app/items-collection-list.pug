@@ -1,13 +1,19 @@
 include ../mixins/general.pug
 
 
+
+
 block AddButton
   div.row: div.col.s6.offset-m2
     +button('button', '{{ "add" | translate:lang }}', "'plus'")(
       '(click)'='onAddButtonClicked()'
     )
 
+
+
 block RequiredInfo
+
+
 
 block ItemsListing
   div.row: div.col.s12.m8.offset-m2: mz-collection('*ngIf'='list.length > 0')
@@ -25,6 +31,8 @@ block ItemsListing
         '[float]'="'true'"
         '(click)'='onEditButtonClicked(i, element)'
       )
+
+
 
 ng-container('*ngIf'='list.length == 0')
   div.row: div.col.s12
