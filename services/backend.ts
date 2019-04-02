@@ -1,5 +1,5 @@
 import { throwError, Observable, of } from 'rxjs'
-import { catchError, map } from 'rxjs/operators'
+import { catchError, map, share } from 'rxjs/operators'
 import {
   Http, Response, Headers, RequestOptions
 } from '@angular/http'
@@ -56,7 +56,7 @@ export abstract class BackendService {
         }),
         catchError(onRequestFailure)
       )
-
+      .pipe(share())
     request.subscribe(onRequestSuccess)
     return request
   }
@@ -80,7 +80,7 @@ export abstract class BackendService {
         }),
         catchError(onRequestFailure)
       )
-
+      .pipe(share())
     request.subscribe(onRequestSuccess)
     return request
   }
@@ -104,7 +104,7 @@ export abstract class BackendService {
         }),
         catchError(onRequestFailure)
       )
-
+      .pipe(share())
     request.subscribe(onRequestSuccess)
     return request
   }
@@ -126,7 +126,7 @@ export abstract class BackendService {
         }),
         catchError(onRequestFailure)
       )
-
+      .pipe(share())
     request.subscribe(onRequestSuccess)
     return request
   }

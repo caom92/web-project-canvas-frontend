@@ -18,19 +18,17 @@ export class ActionConfirmationModalComponent extends MzBaseModal {
   message: string
 
   @Input()
-  set context(value: any) {
-    this._context = value
-  }
+  context: any
 
   readonly actionConfirmation: EventEmitter<any> = new EventEmitter()
 
-  private _context: any
 
   constructor(readonly textTranslator: TranslationService) {
     super()
   }
 
+
   onActionConfirmed(): void {
-    this.actionConfirmation.emit(this._context)
+    this.actionConfirmation.emit(this.context)
   }
 }
