@@ -67,7 +67,7 @@ export function getOnRequestFailureShowToast(
 
 
 
-interface RequestResponseCallbackDescriptor {
+export interface RequestResponseCallbackDescriptor {
   beforeEval?: OnRequestSuccessCallback,
   onSuccess: OnRequestSuccessCallback,
   onError?: OnRequestSuccessCallback,
